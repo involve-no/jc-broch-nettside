@@ -1,0 +1,368 @@
+<title>J.C. Broch typografi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@400;500&display=swap">
+<style>
+/* Layout: samme luftige oppsett som spacingsiden. Hver typografirolle vises som en prøve i den størrelsen den har på skjermen man ser på, med spesifikasjonen ved siden av. */
+:root{
+  --plomme:#3C2128;
+  --sten:#E8E2DB;
+  --tegl:#D0582C;
+  --papir:#FBF6F3;
+  --dempet:#6E5F62;
+  --linje:#DDD4CE;
+  --display:"IvyPresto Display","Cormorant Garamond",Georgia,serif;
+  --text:"IvyPresto Text","Cormorant Garamond",Georgia,serif;
+  --body:"Halyard Text","Jost","Helvetica Neue",Arial,sans-serif;
+
+  /* Spacing (fra spacingskalaen) */
+  --space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;--space-8:2rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;--space-36:9rem;--space-48:12rem;--space-72:18rem;
+  --marg:1.25rem;--seksjon-topp:var(--space-16);--etikett-innhold:var(--space-16);--seksjon-bunn:var(--space-24);--kolonne:var(--space-12);
+
+  /* Typografi, mobil: størrelse / linjeavstand */
+  --h1:48px;--h1-lh:52px;
+  --h2:36px;--h2-lh:40px;
+  --ingress:24px;--ingress-lh:32px;
+  --h3:24px;--h3-lh:28px;
+  --stor:20px;--stor-lh:28px;
+  --brod:16px;--brod-lh:24px;
+  --knapp:14px;--knapp-lh:20px;
+  --etikett:12px;--etikett-lh:16px;
+  color-scheme:light;
+}
+@media (min-width:1024px){:root{
+  --marg:var(--space-16);--seksjon-topp:var(--space-24);--etikett-innhold:var(--space-24);--seksjon-bunn:var(--space-36);--kolonne:var(--space-16);
+  --h1:72px;--h1-lh:76px;--h2:48px;--h2-lh:52px;--ingress:32px;--ingress-lh:40px;--h3:28px;--h3-lh:32px;
+  --stor:24px;--stor-lh:32px;--brod:18px;--brod-lh:28px;--knapp:16px;--knapp-lh:24px;--etikett:14px;--etikett-lh:20px}}
+@media (min-width:1536px){:root{
+  --marg:var(--space-36);--seksjon-topp:var(--space-36);--etikett-innhold:var(--space-48);--seksjon-bunn:var(--space-72);--kolonne:var(--space-36);
+  --h1:100px;--h1-lh:104px;--h2:72px;--h2-lh:76px;--ingress:48px;--ingress-lh:56px;--h3:32px;--h3-lh:40px;
+  --stor:24px;--stor-lh:32px;--brod:18px;--brod-lh:28px;--knapp:18px;--knapp-lh:24px;--etikett:14px;--etikett-lh:20px}}
+
+/* Rollene */
+.t-h1{font-family:var(--display);font-weight:400;font-size:var(--h1);line-height:var(--h1-lh);letter-spacing:-.01em}
+.t-h2{font-family:var(--display);font-weight:400;font-size:var(--h2);line-height:var(--h2-lh);letter-spacing:.02em;text-transform:uppercase}
+.t-ingress{font-family:var(--text);font-weight:300;font-size:var(--ingress);line-height:var(--ingress-lh);letter-spacing:-.005em}
+.t-h3{font-family:var(--display);font-weight:400;font-size:var(--h3);line-height:var(--h3-lh);letter-spacing:.03em;text-transform:uppercase}
+.t-stor{font-family:var(--text);font-weight:400;font-size:var(--stor);line-height:var(--stor-lh)}
+.t-brod{font-family:var(--body);font-weight:400;font-size:var(--brod);line-height:var(--brod-lh)}
+.t-knapp{font-family:var(--body);font-weight:500;font-size:var(--knapp);line-height:var(--knapp-lh);letter-spacing:.08em;text-transform:uppercase}
+.t-etikett{font-family:var(--body);font-weight:400;font-size:var(--etikett);line-height:var(--etikett-lh);letter-spacing:.1em;text-transform:uppercase;color:var(--tegl)}
+
+*{box-sizing:border-box}
+html{overflow-x:clip}
+body{margin:0;background:var(--papir);color:var(--plomme);font-family:var(--body);-webkit-font-smoothing:antialiased}
+.wrap{padding-left:max(var(--marg),env(safe-area-inset-left,0px));padding-right:max(var(--marg),env(safe-area-inset-right,0px))}
+section{position:relative;padding-block:var(--seksjon-topp) var(--seksjon-bunn)}
+section+section::before{content:"";position:absolute;top:0;left:0;right:0;border-top:1px solid var(--linje)}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{font-weight:400;text-wrap:balance}
+.brod{max-width:62ch;color:var(--dempet);text-wrap:pretty}
+code{font:13px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:rgba(60,33,40,.06);border-radius:4px;padding:2px 6px;white-space:nowrap}
+
+.apning{padding-block:var(--seksjon-topp) var(--seksjon-bunn);display:grid;gap:var(--etikett-innhold)}
+.to{display:grid;grid-template-columns:1fr 1.618fr;gap:var(--space-12) var(--kolonne);align-items:end}
+.stabel{display:grid;gap:var(--space-8);min-width:0}
+.stabel-l{gap:var(--space-12)}
+.hode{margin-bottom:var(--etikett-innhold)}
+
+/* Familier */
+.familier{display:grid;grid-template-columns:1fr 1fr;gap:var(--kolonne)}
+.familie{display:grid;gap:var(--space-8);align-content:start;padding-top:var(--space-8);border-top:1px solid var(--plomme);min-width:0}
+.aa{font-size:clamp(120px,14vw,240px);line-height:.9;letter-spacing:-.02em}
+.aa.display{font-family:var(--display);font-weight:400}
+.aa.sans{font-family:var(--body);font-weight:400;letter-spacing:-.03em}
+.familie dl{display:grid;grid-template-columns:auto 1fr;gap:var(--space-3) var(--space-8);margin:0}
+.familie dt{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--dempet);padding-top:3px}
+.familie dd{margin:0;font-size:16px;line-height:24px}
+
+/* Prøver */
+.prover{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid var(--linje)}
+.prove{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,26%);gap:var(--space-8) var(--space-12);align-items:start;padding-block:var(--space-12);border-bottom:1px solid var(--linje)}
+.prove-tekst{min-width:0;overflow-wrap:break-word}
+.prove-tekst .t-ingress,.prove-tekst .t-stor{max-width:32ch}
+.prove-tekst .t-brod{max-width:62ch}
+.spec{display:grid;gap:var(--space-2);font-size:14px;line-height:20px;font-variant-numeric:tabular-nums}
+.spec b{font-weight:500;font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+.spec span{color:var(--dempet)}
+.spec .maal{font-size:15px;color:var(--plomme)}
+
+/* Tabell */
+.tabell{overflow-x:auto;max-width:100%}
+table{width:100%;min-width:820px;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{text-align:left;vertical-align:baseline;padding:var(--space-6) var(--space-6) var(--space-6) 0;border-bottom:1px solid var(--linje)}
+thead th{padding-top:0;font:400 12px/1.4 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--dempet)}
+tbody th{font-family:var(--display);font-weight:400;font-size:clamp(20px,1.5vw,28px);line-height:1.2;padding-right:var(--space-12)}
+td{font-size:15px}
+td b{font-weight:500}
+td span{color:var(--dempet)}
+tr>:last-child{padding-right:0}
+
+/* Regler */
+.regler{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-24) var(--space-16)}
+.regler li{display:grid;gap:var(--space-6);align-content:start;padding-top:var(--space-8);border-top:1px solid var(--plomme)}
+.regler h3{font-family:var(--display);font-size:clamp(26px,2.2vw,36px);line-height:1.15}
+.regler .brod{font-size:16px;line-height:24px}
+
+/* Gjør / unngå */
+.par{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6)}
+.eks{border-radius:14px;padding:var(--space-12) var(--space-8) var(--space-8);display:grid;gap:var(--space-6);align-content:start;background:var(--sten);min-width:0}
+.eks.nei{background:transparent;border:1px dashed #BFB3AC}
+.merke{font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:500}
+.ja .merke{color:var(--plomme)}
+.nei .merke{color:var(--tegl)}
+.eks-felt{display:grid;gap:var(--space-6)}
+.eks-felt .linje{height:1px;background:var(--linje)}
+.eks-tittel{font-family:var(--display);font-size:32px;line-height:40px}
+.eks-tekst{font-family:var(--body);font-size:16px;line-height:24px;color:var(--dempet)}
+.eks-tittel.feil-a{font-weight:500;letter-spacing:-.02em}
+.eks-tekst.feil-b{font-family:var(--text);font-size:18px;color:var(--plomme)}
+.eks-tittel.feil-c{font-family:var(--body);font-weight:300;font-size:30px}
+.eks figcaption{font-size:14px;line-height:20px;color:var(--dempet)}
+
+/* Kode */
+.kode{position:relative;background:var(--plomme);color:var(--sten);border-radius:14px;padding:var(--space-16) var(--space-12) var(--space-12)}
+.kode pre{margin:0;overflow-x:auto;font:14px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.kode .k{color:#B8C5D2}
+.kopier{position:absolute;top:var(--space-6);right:var(--space-6);font:500 12px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--sten);background:none;border:1px solid rgba(232,226,219,.35);border-radius:999px;padding:10px 16px;cursor:pointer}
+.kopier:hover{background:rgba(232,226,219,.1)}
+.kopier:focus-visible{outline:2px solid var(--sten);outline-offset:2px}
+
+footer{padding-block:var(--space-16) calc(var(--space-24) + env(safe-area-inset-bottom,0px));border-top:1px solid var(--linje);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--dempet)}
+
+@media (max-width:820px){
+  .to,.familier,.par{grid-template-columns:1fr}
+  .prove{grid-template-columns:1fr;gap:var(--space-6)}
+  .regler{grid-template-columns:1fr;gap:var(--space-16)}
+  .kode{padding:var(--space-16) var(--space-6) var(--space-8)}
+}
+</style>
+
+<main lang="nb">
+  <header class="apning wrap">
+    <p class="t-etikett">J.C. Broch · Designprofil · Nettside</p>
+    <div class="to">
+      <div class="stabel"><h1 class="t-h1">Typografi</h1></div>
+      <div class="stabel stabel-l">
+        <p class="t-ingress">To skriftfamilier, åtte roller. Serifen bærer stemmen, groteskeren gjør jobben.</p>
+        <p class="t-brod brod">IvyPresto brukes til alt som skal leses som uttrykk: overskrifter, ingresser og sitater. Halyard Text brukes til alt som skal leses som informasjon: brødtekst, knapper, menyer og etiketter. Størrelsene følger skalaen 100 / 72 / 48 / 32 / 24 / 18 / 14, og linjeavstandene går opp i 4 px.</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="wrap" aria-labelledby="t-fam">
+    <div class="to hode">
+      <div class="stabel">
+        <p class="t-etikett">Skriftfamilier</p>
+        <h2 class="t-h2" id="t-fam">To familier</h2>
+      </div>
+      <p class="t-brod brod">Begge er lisensskrifter og må lastes inn som webfont fra egen server. Erstatningene i parentes vises bare hvis lisensfilene mangler.</p>
+    </div>
+    <div class="familier">
+      <div class="familie">
+        <p class="aa display" aria-hidden="true">Aa</p>
+        <dl>
+          <dt>Familie</dt><dd>IvyPresto (Cormorant Garamond)</dd>
+          <dt>Snitt</dt><dd>Display til 32 px og over. Text til ingress og stor brødtekst.</dd>
+          <dt>Vekter</dt><dd>Light 300 og Regular 400. Kursiv for utheving.</dd>
+          <dt>Brukes til</dt><dd>H1, H2, H3, ingress, stor brødtekst, sitater</dd>
+        </dl>
+      </div>
+      <div class="familie">
+        <p class="aa sans" aria-hidden="true">Aa</p>
+        <dl>
+          <dt>Familie</dt><dd>Halyard Text (Jost)</dd>
+          <dt>Snitt</dt><dd>Text til alt. Micro kun under 12 px.</dd>
+          <dt>Vekter</dt><dd>Book 400 og Medium 500</dd>
+          <dt>Brukes til</dt><dd>Brødtekst, knapper, lenker, meny, etiketter, skjemaer</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="t-roller">
+    <div class="to hode">
+      <div class="stabel">
+        <p class="t-etikett">Roller</p>
+        <h2 class="t-h2" id="t-roller">Åtte roller</h2>
+      </div>
+      <p class="t-brod brod">Prøvene vises i den størrelsen de har på skjermen du ser på nå. Målene til høyre er for stor skjerm (2xl, 1536 px og bredere).</p>
+    </div>
+    <ol class="prover">
+      <li class="prove">
+        <div class="prove-tekst"><p class="t-h1">Langsiktig eierskap</p></div>
+        <div class="spec"><b>H1</b><span class="maal">100 / 104 px · −0,01 em</span><span>IvyPresto Display Regular. Én per side. Setningsstil.</span></div>
+      </li>
+      <li class="prove">
+        <div class="prove-tekst"><p class="t-h2">Vår portefølje</p></div>
+        <div class="spec"><b>H2</b><span class="maal">72 / 76 px · +0,02 em</span><span>IvyPresto Display Regular. Versaler. Seksjonstitler.</span></div>
+      </li>
+      <li class="prove">
+        <div class="prove-tekst"><p class="t-ingress">Gjennom langsiktig eierskap utvikler vi virksomheter som skaper arbeidsplasser og verdier som varer.</p></div>
+        <div class="spec"><b>Ingress</b><span class="maal">48 / 56 px · −0,005 em</span><span>IvyPresto Text Light. Maks 32 tegn per linje. Én per seksjon.</span></div>
+      </li>
+      <li class="prove">
+        <div class="prove-tekst"><p class="t-h3">Næringseiendom</p></div>
+        <div class="spec"><b>H3</b><span class="maal">32 / 40 px · +0,03 em</span><span>IvyPresto Display Regular. Versaler. Titler i lister og kort.</span></div>
+      </li>
+      <li class="prove">
+        <div class="prove-tekst"><p class="t-stor">Historien om J.C. Broch begynner med feil avkjøring på E18. Det skulle vise seg å få større konsekvenser enn han kunne ane.</p></div>
+        <div class="spec"><b>Stor brødtekst</b><span class="maal">24 / 32 px · 0</span><span>IvyPresto Text Regular. Korte tekster ved siden av bilder.</span></div>
+      </li>
+      <li class="prove">
+        <div class="prove-tekst"><p class="t-brod">Vi investerer i selskaper med potensial for langsiktig utvikling, med aktivt eierskap og tett samarbeid med ledelsen. Horten Industripark er hjørnesteinen i eiendomsporteføljen, med lokaler for industri, teknologi og kontor.</p></div>
+        <div class="spec"><b>Brødtekst</b><span class="maal">18 / 28 px · 0</span><span>Halyard Text Book. Maks 65 tegn per linje.</span></div>
+      </li>
+      <li class="prove">
+        <div class="prove-tekst"><p class="t-knapp">Les mer om oss →</p></div>
+        <div class="spec"><b>Knapp og lenke</b><span class="maal">18 / 24 px · +0,08 em</span><span>Halyard Text Medium. Versaler. Knapphøyde 48 px.</span></div>
+      </li>
+      <li class="prove">
+        <div class="prove-tekst"><p class="t-etikett">Om oss</p></div>
+        <div class="spec"><b>Etikett</b><span class="maal">14 / 20 px · +0,1 em</span><span>Halyard Text Book. Versaler. Teglstein på lys bunn, sten på plomme.</span></div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="wrap" aria-labelledby="t-bryt">
+    <div class="to hode">
+      <div class="stabel">
+        <p class="t-etikett">Brytepunkter</p>
+        <h2 class="t-h2" id="t-bryt">Størrelse per skjerm</h2>
+      </div>
+      <p class="t-brod brod">Samme brytepunkter som spacingen. Størrelse / linjeavstand i px. Overskriftene krymper mest, brødteksten minst.</p>
+    </div>
+    <div class="tabell">
+      <table>
+        <thead><tr><th scope="col">Rolle</th><th scope="col">Mobil</th><th scope="col">lg · 1024</th><th scope="col">2xl · 1536</th><th scope="col">Familie og vekt</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">H1</th><td><b>48</b> <span>/ 52</span></td><td><b>72</b> <span>/ 76</span></td><td><b>100</b> <span>/ 104</span></td><td>IvyPresto Display 400</td></tr>
+          <tr><th scope="row">H2</th><td><b>36</b> <span>/ 40</span></td><td><b>48</b> <span>/ 52</span></td><td><b>72</b> <span>/ 76</span></td><td>IvyPresto Display 400, versaler</td></tr>
+          <tr><th scope="row">Ingress</th><td><b>24</b> <span>/ 32</span></td><td><b>32</b> <span>/ 40</span></td><td><b>48</b> <span>/ 56</span></td><td>IvyPresto Text 300</td></tr>
+          <tr><th scope="row">H3</th><td><b>24</b> <span>/ 28</span></td><td><b>28</b> <span>/ 32</span></td><td><b>32</b> <span>/ 40</span></td><td>IvyPresto Display 400, versaler</td></tr>
+          <tr><th scope="row">Stor brødtekst</th><td><b>20</b> <span>/ 28</span></td><td><b>24</b> <span>/ 32</span></td><td><b>24</b> <span>/ 32</span></td><td>IvyPresto Text 400</td></tr>
+          <tr><th scope="row">Brødtekst</th><td><b>16</b> <span>/ 24</span></td><td><b>18</b> <span>/ 28</span></td><td><b>18</b> <span>/ 28</span></td><td>Halyard Text 400</td></tr>
+          <tr><th scope="row">Knapp og lenke</th><td><b>14</b> <span>/ 20</span></td><td><b>16</b> <span>/ 24</span></td><td><b>18</b> <span>/ 24</span></td><td>Halyard Text 500, versaler</td></tr>
+          <tr><th scope="row">Etikett</th><td><b>12</b> <span>/ 16</span></td><td><b>14</b> <span>/ 20</span></td><td><b>14</b> <span>/ 20</span></td><td>Halyard Text 400, versaler</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="t-regler">
+    <div class="hode">
+      <div class="stabel">
+        <p class="t-etikett">Regler</p>
+        <h2 class="t-h2" id="t-regler">Slik brukes skriftene</h2>
+      </div>
+    </div>
+    <ul class="regler">
+      <li><h3>Bare rollene</h3><p class="brod">All tekst skal ha en av de åtte rollene. Trenger noe mer vekt, bruk rollen over. Ingen egne størrelser, vekter eller linjeavstander.</p></li>
+      <li><h3>Serif over 18, grotesk under</h3><p class="brod">IvyPresto brukes aldri under 18 px, for de tynne strekene forsvinner. Halyard brukes aldri til overskrifter over 24 px.</p></li>
+      <li><h3>Kursiv, ikke fet</h3><p class="brod">Uthev enkeltord med IvyPresto kursiv, som «industri, teknologi og eiendom». Fet skrift brukes ikke i løpende tekst.</p></li>
+      <li><h3>Versaler med sperring</h3><p class="brod">Versaler bare i H2, H3, knapper og etiketter, og alltid med sperringen i tabellen. Aldri i brødtekst eller ingress.</p></li>
+      <li><h3>Linjelengde</h3><p class="brod">Ingress maks 32 tegn per linje, brødtekst maks 65. Overskrifter balanseres så ingen linje står med ett ord alene.</p></li>
+      <li><h3>Like ting, lik stil</h3><p class="brod">Elementer i samme liste eller rad har samme rolle. Første punkt i en liste skal ikke se annerledes ut enn resten.</p></li>
+      <li><h3>Orddeling</h3><p class="brod">Siden settes med <code>lang="nb"</code>. Brødtekst får automatisk orddeling. Overskrifter og ingresser deles aldri.</p></li>
+      <li><h3>Farge</h3><p class="brod">Tekst er plomme på lys bunn og sten på plomme. Sekundærtekst er dempet plomme. Teglstein bare i etiketter.</p></li>
+      <li><h3>Tall</h3><p class="brod">Tall i tabeller og nøkkeltall settes med like brede sifre, så kolonnene står rett.</p></li>
+    </ul>
+  </section>
+
+  <section class="wrap" aria-labelledby="t-eks">
+    <div class="to hode">
+      <div class="stabel">
+        <p class="t-etikett">Gjør og unngå</p>
+        <h2 class="t-h2" id="t-eks">Porteføljelisten</h2>
+      </div>
+      <p class="t-brod brod">Et vanlig feilgrep er at første punkt får egen stil. Alle punktene skal ha samme rolle og samme luft.</p>
+    </div>
+    <div class="par">
+      <figure class="eks ja" style="margin:0">
+        <span class="merke">Gjør</span>
+        <div class="eks-felt">
+          <p class="eks-tittel">Investeringer</p>
+          <p class="eks-tekst">Aktivt eierskap og tett samarbeid med ledelsen.</p>
+          <div class="linje"></div>
+          <p class="eks-tittel">Næringseiendom</p>
+          <p class="eks-tekst">Rom for industri, teknologi og arbeidsplasser.</p>
+        </div>
+        <figcaption>Samme rolle for alle titler og tekster, 24 px fra tittel til tekst.</figcaption>
+      </figure>
+      <figure class="eks nei" style="margin:0">
+        <span class="merke">Unngå</span>
+        <div class="eks-felt">
+          <p class="eks-tittel feil-a">Investeringer</p>
+          <p class="eks-tekst feil-b">Aktivt eierskap og tett samarbeid med ledelsen.</p>
+          <div class="linje"></div>
+          <p class="eks-tittel feil-c">Næringseiendom</p>
+          <p class="eks-tekst">Rom for industri, teknologi og arbeidsplasser.</p>
+        </div>
+        <figcaption>Første punkt i en annen vekt og familie enn resten. Grotesk brukt til tittel.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="t-kode">
+    <div class="to hode">
+      <div class="stabel">
+        <p class="t-etikett">Kode</p>
+        <h2 class="t-h2" id="t-kode">CSS</h2>
+      </div>
+      <p class="t-brod brod">Variablene skifter verdi ved brytepunktene. Klassene settes på elementet, så HTML-taggen kan velges etter innhold og ikke etter utseende.</p>
+    </div>
+    <div class="kode">
+      <button class="kopier" type="button" id="kopier">Kopier</button>
+<pre id="css"><span class="k">/* J.C. Broch · typografi · størrelse / linjeavstand */</span>
+:root {
+  --display: "IvyPresto Display", "Cormorant Garamond", Georgia, serif;
+  --text:    "IvyPresto Text", "Cormorant Garamond", Georgia, serif;
+  --body:    "Halyard Text", "Jost", "Helvetica Neue", Arial, sans-serif;
+
+  <span class="k">/* Mobil */</span>
+  --h1: 48px;      --h1-lh: 52px;
+  --h2: 36px;      --h2-lh: 40px;
+  --ingress: 24px; --ingress-lh: 32px;
+  --h3: 24px;      --h3-lh: 28px;
+  --stor: 20px;    --stor-lh: 28px;
+  --brod: 16px;    --brod-lh: 24px;
+  --knapp: 14px;   --knapp-lh: 20px;
+  --etikett: 12px; --etikett-lh: 16px;
+}
+@media (min-width: 1024px) { :root { <span class="k">/* lg */</span>
+  --h1: 72px; --h1-lh: 76px;  --h2: 48px; --h2-lh: 52px;
+  --ingress: 32px; --ingress-lh: 40px;  --h3: 28px; --h3-lh: 32px;
+  --stor: 24px; --stor-lh: 32px;  --brod: 18px; --brod-lh: 28px;
+  --knapp: 16px; --knapp-lh: 24px;  --etikett: 14px; --etikett-lh: 20px;
+} }
+@media (min-width: 1536px) { :root { <span class="k">/* 2xl */</span>
+  --h1: 100px; --h1-lh: 104px;  --h2: 72px; --h2-lh: 76px;
+  --ingress: 48px; --ingress-lh: 56px;  --h3: 32px; --h3-lh: 40px;
+  --knapp: 18px;
+} }
+
+.t-h1      { font: 400 var(--h1)/var(--h1-lh) var(--display); letter-spacing: -.01em; text-wrap: balance; }
+.t-h2      { font: 400 var(--h2)/var(--h2-lh) var(--display); letter-spacing: .02em; text-transform: uppercase; text-wrap: balance; }
+.t-ingress { font: 300 var(--ingress)/var(--ingress-lh) var(--text); letter-spacing: -.005em; max-width: 32ch; }
+.t-h3      { font: 400 var(--h3)/var(--h3-lh) var(--display); letter-spacing: .03em; text-transform: uppercase; }
+.t-stor    { font: 400 var(--stor)/var(--stor-lh) var(--text); }
+.t-brod    { font: 400 var(--brod)/var(--brod-lh) var(--body); max-width: 65ch; hyphens: auto; }
+.t-knapp   { font: 500 var(--knapp)/var(--knapp-lh) var(--body); letter-spacing: .08em; text-transform: uppercase; }
+.t-etikett { font: 400 var(--etikett)/var(--etikett-lh) var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--tegl); }
+.t-h1 em, .t-ingress em, .t-stor em { font-style: italic; }</pre>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">J.C. Broch · Typografi · November 2026</footer>
+
+<script>
+(function(){
+  var b=document.getElementById('kopier'),pre=document.getElementById('css');
+  function ferdig(t){b.textContent=t;setTimeout(function(){b.textContent='Kopier'},1800)}
+  function velg(){var r=document.createRange();r.selectNodeContents(pre);var s=getSelection();s.removeAllRanges();s.addRange(r);ferdig('Markert, trykk Ctrl+C')}
+  b.addEventListener('click',function(){
+    try{navigator.clipboard.writeText(pre.textContent).then(function(){ferdig('Kopiert')},velg)}catch(e){velg()}
+  });
+})();
+</script>

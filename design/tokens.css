@@ -1,0 +1,133 @@
+/* =========================================================================
+   Broch Gruppen – designtokens
+   Grunnlag: Figma «Broch_Gruppen_Nettside» (forside + underside-header),
+   avgjørelser tatt i designarbeidet november 2026.
+   ========================================================================= */
+
+/* ---------- Fonter: Adobe Fonts ------------------------------------------
+   Fontene lastes fra Adobe Fonts-prosjektet «Broch nettside». Legg denne
+   lenken i <head> på hver side, FØR denne filen (bare én gang):
+     <link rel="stylesheet" href="https://use.typekit.net/qos6gzx.css">
+   Prosjektet skal inneholde ALLE snitt av IvyPresto (Display, Headline, Text)
+   og Halyard (Display, Text, Micro), fra Thin/ExtraLight til Bold, med kursiv.
+   Standardvekter i rollene under: IvyPresto 300 og 400, Halyard 400 og 500.
+   Andre vekter kan brukes på enkeltsider når det trengs. */
+
+:root {
+  /* ---------- Farger ---------- */
+  --plomme:   #3C2128;  /* ALL tekst. Bærende farge. */
+  --sten:     #E8E2DB;  /* lys flate */
+  --industri: #B8C5D2;  /* lys industriblå */
+  --tegl:     #D0582C;  /* aksent og aksenttekst – bare 3,2–3,8 : 1, se regel 2 i CLAUDE.md */
+  --papir:    #FAF6F3;  /* sidebakgrunn */
+  --flate:    #F3ECE7;  /* alternativ lys seksjon (Om oss på forsiden) */
+  --bildeboks:#DDD6CF;
+
+  --tekst: var(--plomme);
+
+  /* Forløpning: brukes i bunnfelt og i header på undersider */
+  --forlopning: linear-gradient(20deg, var(--sten) 15%, #CDD4DB 65%, var(--industri));
+
+  /* ---------- Fontfamilier ---------- */
+  --display: "ivypresto-display", "IvyPresto Display", Georgia, serif;  /* H1, påstander, titler */
+  --text:    "ivypresto-text", "IvyPresto Text", Georgia, serif;     /* ingress og ALL løpende tekst */
+  --ui:      "halyard-text", "Halyard Text", "Helvetica Neue", Arial, sans-serif; /* KUN lenker, meny, etiketter, små tekster */
+  /* Flere snitt i prosjektet, til bruk ved behov */
+  --headline:   "ivypresto-headline", "IvyPresto Headline", Georgia, serif;   /* mellomstore titler, 24–48 px */
+  --ui-display: "halyard-display", "Halyard Display", "Helvetica Neue", Arial, sans-serif; /* Halyard i store størrelser */
+  --ui-micro:   "halyard-micro", "Halyard Micro", "Helvetica Neue", Arial, sans-serif;     /* Halyard under 12 px */
+
+  /* ---------- Grid ----------
+     Mobil 4 kol · md 8 kol · lg/2xl 12 kol.
+     1920: 12 × 114,67 px, gutter 24, marg 140 (= 7,29vw).            */
+  --kolonner: 4;
+  --gutter: 16px;
+  --marg: 20px;
+  --maks: 1920px;
+
+  /* ---------- Spacing – definert i «J.C. Broch spacing» (reference/spacing.html) ----------
+     1 enhet = 4 px = 0,25 rem. Trinnene heter det samme som i Tailwind.
+     Bruk bare disse trinnene. */
+  --space-2: .5rem;   /*   8 */
+  --space-3: .75rem;  /*  12 */
+  --space-4: 1rem;    /*  16 */
+  --space-6: 1.5rem;  /*  24 */
+  --space-8: 2rem;    /*  32 */
+  --space-12: 3rem;   /*  48 */
+  --space-16: 4rem;   /*  64 */
+  --space-24: 6rem;   /*  96 */
+  --space-36: 9rem;   /* 144 */
+  --space-48: 12rem;  /* 192 */
+  --space-72: 18rem;  /* 288 */
+
+  /* Roller (mobil) – endres ved brytepunkt under */
+  --seksjon-topp:     var(--space-16);  /*  64 →  96 → 144 */
+  --etikett-innhold:  var(--space-16);  /*  64 →  96 → 192 */
+  --seksjon-bunn:     var(--space-24);  /*  96 → 144 → 288 */
+  --kolonne-luft:     var(--space-12);  /*  48 →  64 → 144  (mellom bilde og tekst) */
+  --h1-til-snarveier: var(--space-8);   /*  32 →  48 →  64 */
+  --tekst-til-lenke:  var(--space-8);   /*  32 →  48 →  48 */
+  --tittel-til-tekst: var(--space-4);   /*  16 →  24 →  24 */
+  --ikon-til-tekst:   var(--space-2);   /*   8 →   8 →   8 */
+
+  /* ---------- Typografi – definert i «J.C. Broch typografi» (reference/typografi.html) ----------
+     Størrelse / linjeavstand i px. Mobil her, lg og 2xl under. */
+  --h1: 48px;       --h1-lh: 52px;      /* IvyPresto Display 300, versaler, +0,005 em */
+  --h2: 36px;       --h2-lh: 40px;      /* IvyPresto Display 300, versaler, +0,02 em */
+  --ingress: 24px;  --ingress-lh: 32px; /* IvyPresto Text 300, −0,005 em, maks 32 tegn */
+  --h3: 24px;       --h3-lh: 28px;      /* IvyPresto Display 300, +0,03 em */
+  --stor: 20px;     --stor-lh: 28px;    /* IvyPresto Text 400 */
+  --brod: 16px;     --brod-lh: 24px;    /* IvyPresto Text 400, maks 65 tegn */
+  --lenke: 14px;    --lenke-lh: 20px;   /* Halyard Text 500, versaler, +0,08 em */
+  --etikett: 12px;  --etikett-lh: 16px; /* Halyard Text 500, versaler, +0,1 em */
+
+  /* ---------- Form ---------- */
+  --radius: 20px;
+  --radius-seksjon: clamp(32px, 3.33vw, 64px); /* rund bunn på mørkt bånd: 64 ved 1920 (mindre runde, AD 12.11.2026) */
+  --ease: cubic-bezier(.16, 1, .3, 1);
+}
+
+@media (min-width: 768px) {  /* md: bare gridet endres, typografi og luft som mobil */
+  :root { --kolonner: 8; --gutter: 20px; --marg: 40px; }
+}
+@media (min-width: 1024px) { /* lg */
+  :root { --kolonner: 12; --gutter: 24px; --marg: 64px;
+          --seksjon-topp: var(--space-24); --etikett-innhold: var(--space-24); --seksjon-bunn: var(--space-36);
+          --kolonne-luft: var(--space-16); --h1-til-snarveier: var(--space-12); --tekst-til-lenke: var(--space-12); --tittel-til-tekst: var(--space-6);
+          --h1: 72px; --h1-lh: 76px; --h2: 48px; --h2-lh: 52px; --ingress: 32px; --ingress-lh: 40px; --h3: 28px; --h3-lh: 32px;
+          --stor: 24px; --stor-lh: 32px; --brod: 18px; --brod-lh: 28px; --lenke: 18px; --lenke-lh: 24px; --etikett: 14px; --etikett-lh: 20px; }
+}
+@media (min-width: 1536px) { /* 2xl */
+  :root { --marg: max(112px, 7.29vw);   /* 140 px ved 1920 */
+          --seksjon-topp: var(--space-36); --etikett-innhold: var(--space-48); --seksjon-bunn: var(--space-72);
+          --kolonne-luft: var(--space-36); --h1-til-snarveier: var(--space-16);
+          --h1: 100px; --h1-lh: 104px; --h2: 72px; --h2-lh: 76px; --ingress: 48px; --ingress-lh: 56px; --h3: 32px; --h3-lh: 40px;
+          --etikett: 18px; --etikett-lh: 24px; }  /* etikett 18 ved 2xl; lenke beholder 16 (AD 12.11.2026) */
+}
+
+/* ---------- Grunnstiler ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--papir); color: var(--tekst); font: 400 var(--brod)/var(--brod-lh) var(--text); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p { margin: 0; }
+img { display: block; max-width: 100%; }
+
+/* Grid: alle seksjoner legger innholdet i .grid, elementer plasseres med grid-column */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--kolonner), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  padding-inline: max(var(--marg), env(safe-area-inset-left, 0px)) max(var(--marg), env(safe-area-inset-right, 0px));
+  max-width: var(--maks);
+  margin-inline: auto;
+}
+.full { grid-column: 1 / -1; }
+
+/* ---------- Typografiroller ---------- */
+.t-h1      { font: 300 var(--h1)/var(--h1-lh) var(--display); letter-spacing: .005em; text-transform: uppercase; text-wrap: balance; }
+.t-h2      { font: 300 var(--h2)/var(--h2-lh) var(--display); letter-spacing: .02em; text-transform: uppercase; text-wrap: balance; }
+.t-ingress { font: 300 var(--ingress)/var(--ingress-lh) var(--text); letter-spacing: -.005em; max-width: 32ch; text-wrap: pretty; }
+.t-h3      { font: 300 var(--h3)/var(--h3-lh) var(--display); letter-spacing: .03em; }
+.t-stor    { font: 400 var(--stor)/var(--stor-lh) var(--text); text-wrap: pretty; }
+.t-brod    { font: 400 var(--brod)/var(--brod-lh) var(--text); max-width: 65ch; hyphens: auto; text-wrap: pretty; }
+.t-lenke   { font: 500 var(--lenke)/var(--lenke-lh) var(--ui); letter-spacing: .08em; text-transform: uppercase; color: var(--tekst); text-decoration: none; }
+.t-etikett { font: 500 var(--etikett)/var(--etikett-lh) var(--ui); letter-spacing: .1em; text-transform: uppercase; color: var(--tekst); }

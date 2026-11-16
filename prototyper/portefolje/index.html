@@ -1,0 +1,194 @@
+<title>Broch Gruppen portefølje</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: underside uten hero. Sentrert etikett og påstand i versaler med deler i dempet tone, smal tekstspalte forskjøvet mot høyre, deretter forskjøvet to-kolonners rutenett med bildekort for industriene, mørkt kontaktbånd og bunnfelt som på forsiden. */
+:root{
+  --plomme:#3C2128;
+  --sten:#E8E2DB;
+  --tegl:#D0582C;
+  --industri:#B8C5D2;
+  --papir:#FAF6F3;
+  --dempet:#6E5F62;
+  --lys-tekst:#9A878B;
+  --linje:#DDD4CE;
+  --display:"IvyPresto Display",Georgia,serif;
+  --text:"IvyPresto Text",Georgia,serif;
+  --body:"Halyard Text","Helvetica Neue",Arial,sans-serif;
+
+  --space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;--space-8:2rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;--space-36:9rem;--space-48:12rem;--space-72:18rem;
+  --marg:1.25rem;--seksjon-topp:var(--space-16);--etikett-innhold:var(--space-16);--seksjon-bunn:var(--space-24);--kolonne:var(--space-12);
+
+  --h1:32px;--h1-lh:38px;--h2:32px;--h2-lh:38px;--h3:24px;--h3-lh:28px;
+  --stor:20px;--stor-lh:28px;--brod:16px;--brod-lh:24px;--knapp:14px;--knapp-lh:20px;--etikett:12px;--etikett-lh:16px;
+  --radius:20px;
+  color-scheme:light;
+}
+@media (min-width:1024px){:root{
+  --marg:var(--space-16);--seksjon-topp:var(--space-24);--etikett-innhold:var(--space-24);--seksjon-bunn:var(--space-36);--kolonne:var(--space-16);
+  --h1:56px;--h1-lh:60px;--h2:48px;--h2-lh:52px;--h3:32px;--h3-lh:36px;
+  --stor:24px;--stor-lh:32px;--brod:18px;--brod-lh:28px;--knapp:16px;--knapp-lh:24px;--etikett:14px;--etikett-lh:20px}}
+@media (min-width:1536px){:root{
+  --marg:var(--space-36);--seksjon-topp:var(--space-36);--etikett-innhold:var(--space-48);--seksjon-bunn:var(--space-72);--kolonne:var(--space-36);
+  --h1:72px;--h1-lh:76px;--h2:72px;--h2-lh:76px;--h3:40px;--h3-lh:44px;--knapp:18px}}
+
+*{box-sizing:border-box}
+html{overflow-x:clip;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--papir);color:var(--plomme);font-family:var(--body);-webkit-font-smoothing:antialiased}
+h1,h2,h3,p{margin:0}
+img{display:block;max-width:100%}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+.wrap{padding-left:max(var(--marg),env(safe-area-inset-left,0px));padding-right:max(var(--marg),env(safe-area-inset-right,0px))}
+
+.t-utsagn{font:400 var(--h1)/var(--h1-lh) var(--display);letter-spacing:.01em;text-transform:uppercase;text-wrap:balance}
+.t-utsagn .lys{color:var(--lys-tekst)}
+.t-h2{font:400 var(--h2)/var(--h2-lh) var(--display);letter-spacing:.01em;text-transform:uppercase;text-wrap:balance}
+.t-h3{font:400 var(--h3)/var(--h3-lh) var(--display);letter-spacing:.02em;text-transform:uppercase}
+.t-stor{font:400 var(--stor)/var(--stor-lh) var(--text);text-wrap:pretty}
+.t-brod{font:400 var(--brod)/var(--brod-lh) var(--body);hyphens:auto;text-wrap:pretty}
+.t-knapp{font:500 var(--knapp)/var(--knapp-lh) var(--body);letter-spacing:.08em;text-transform:uppercase}
+.t-etikett{font:500 var(--etikett)/var(--etikett-lh) var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--tegl)}
+
+.lenke{display:inline-flex;align-items:center;gap:var(--space-2);text-decoration:none}
+.lenke span{transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.lenke:hover span{transform:translateX(6px)}
+
+/* Navigasjon */
+.nav{display:flex;justify-content:space-between;align-items:center;padding-top:calc(var(--space-8) + env(safe-area-inset-top,0px))}
+.logo{display:block;color:var(--plomme)}
+.logo svg{display:block;width:clamp(120px,7.5vw,144px);height:auto}
+.meny-knapp{display:inline-flex;align-items:center;gap:var(--space-3);background:none;border:0;padding:var(--space-2) 0;cursor:pointer;color:var(--plomme)}
+.meny-knapp .t-knapp{font-size:13px;line-height:16px}
+.burger{display:grid;gap:4px;width:20px}
+.burger i{display:block;height:1.5px;background:currentColor}
+.sti{display:flex;gap:var(--space-2);justify-content:center;margin-top:var(--space-8);font:400 13px/16px var(--body);color:var(--dempet)}
+.sti a{text-decoration:none}
+.sti a:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* Innledning */
+.innledning{padding-block:var(--space-24) var(--seksjon-bunn);display:grid;gap:var(--space-12)}
+.innledning>.t-etikett{text-align:center}
+.innledning .t-utsagn{text-align:center;max-width:min(100%,1180px);justify-self:center}
+.forskjovet{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--kolonne);margin-top:var(--space-12)}
+.forskjovet>div{grid-column:2;display:grid;gap:var(--space-6);max-width:40ch;min-width:0}
+.forskjovet .t-brod{color:var(--dempet)}
+.motto{display:grid;justify-items:center;gap:var(--space-3);text-align:center;margin-top:var(--space-12)}
+.motto p:last-child{font:500 13px/20px var(--body);letter-spacing:.08em;text-transform:uppercase;max-width:30ch}
+
+/* Bildekort */
+.rutenett{display:grid;grid-template-columns:repeat(2,minmax(0,600px));justify-content:center;column-gap:var(--space-6);padding-bottom:var(--seksjon-bunn)}
+.kol{display:grid;gap:var(--space-6);align-content:start}
+.kol-b{padding-top:48%}
+.kort{position:relative;display:block;aspect-ratio:600/660;max-width:100%;border-radius:var(--radius);overflow:hidden;text-decoration:none;color:var(--sten);background:var(--plomme);isolation:isolate}
+.kort img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.16,1,.3,1);z-index:-2}
+.kort::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(40,14,17,0) 45%,rgba(40,14,17,.72));transition:background .6s}
+.kort:hover img{transform:scale(1.04)}
+.kort-tekst{position:absolute;left:var(--space-8);right:var(--space-8);bottom:var(--space-8);display:grid;gap:var(--space-3)}
+.kort-mer{display:inline-flex;align-items:center;gap:var(--space-2);font:500 12px/16px var(--body);letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.kort-mer span{transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.kort:hover .kort-mer span{transform:translateX(6px)}
+.kort.boks{background:#DDD6CF;color:var(--plomme)}
+.kort.boks::after{display:none}
+.kort.boks svg{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.kort.boks svg line{stroke:#C8BEB6;stroke-width:1;vector-effect:non-scaling-stroke}
+.boks-merke{position:absolute;top:var(--space-8);left:var(--space-8);font:500 11px/14px var(--body);letter-spacing:.12em;text-transform:uppercase;background:#DDD6CF;color:var(--dempet)}
+
+/* Kontaktbånd */
+.kontakt{position:relative;z-index:1;background:var(--plomme);color:var(--sten);padding-block:var(--seksjon-topp) var(--seksjon-bunn);border-radius:0 0 clamp(60px,6.25vw,120px) clamp(60px,6.25vw,120px)}
+.kontakt .t-etikett{color:var(--sten);opacity:.8}
+.kontakt .t-h2{margin-top:var(--etikett-innhold);max-width:22ch}
+.kontakt .forskjovet .t-brod{color:rgba(232,226,219,.78)}
+.knapp{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-3);height:48px;padding:0 var(--space-6);border:1px solid rgba(232,226,219,.45);border-radius:999px;text-decoration:none;justify-self:start;transition:background .3s}
+.knapp:hover{background:rgba(232,226,219,.1)}
+
+/* Bunn */
+.bunn{position:relative;margin-top:calc(-1 * clamp(60px,6.25vw,120px));padding-top:calc(clamp(60px,6.25vw,120px) + var(--space-24));padding-bottom:calc(var(--space-24) + env(safe-area-inset-bottom,0px));background:linear-gradient(20deg,var(--sten) 15%,#CDD4DB 65%,var(--industri));overflow:hidden}
+.bunn-g{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;grid-template-areas:"adr meny" "logo meny";gap:var(--space-24) var(--space-12);align-items:start}
+.adr{grid-area:adr;font:400 var(--stor)/var(--stor-lh) var(--display);font-style:normal}
+.bunn-meny{grid-area:meny;list-style:none;margin:0 var(--space-24) 0 0;padding:0;display:grid;gap:var(--space-3)}
+.bunn-meny a{font:500 15px/22px var(--body);text-decoration:none}
+.bunn-meny a:hover{text-decoration:underline;text-underline-offset:4px}
+.logo-bunn{grid-area:logo;display:block;width:min(100%,652px);height:auto;color:var(--plomme)}
+.til-topp{position:absolute;z-index:2;top:calc(clamp(60px,6.25vw,120px) + var(--space-12));right:max(var(--marg),env(safe-area-inset-right,0px));display:grid;justify-items:center;gap:var(--space-2);text-decoration:none}
+.til-topp .t-knapp{font-size:11px;line-height:14px;letter-spacing:.12em}
+.til-topp svg{width:34px;height:auto;fill:var(--plomme)}
+.monster{position:absolute;pointer-events:none}
+.monster path{fill:none;stroke:rgba(255,255,255,.9);stroke-width:1.2;vector-effect:non-scaling-stroke;filter:drop-shadow(1px 2px 2px rgba(60,33,40,.18))}
+.monster-bunn{left:41vw;top:calc(clamp(60px,6.25vw,120px) + var(--space-12));width:min(600px,30vw)}
+
+@media (max-width:820px){
+  .forskjovet{grid-template-columns:1fr}
+  .forskjovet>div{grid-column:1}
+  .rutenett{grid-template-columns:minmax(0,1fr);row-gap:var(--space-6)}
+  .kol-b{padding-top:0}
+  .bunn-g{grid-template-columns:1fr;grid-template-areas:"adr" "meny" "logo";gap:var(--space-12)}
+  .bunn-meny{margin:0}
+  .monster-bunn{left:auto;right:-24vw;width:70vw}
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 640.1 186.3"><g fill="currentColor" transform="translate(-73.5 -48.8)"><path d="M209.3,120.8h-5.7c-8.5.5-16.6,3.3-23.5,8.2-.6.4-1.4.5-2,.4-.6-1.5-1-3.1-1-4.7V49.9c-2.1-.2-3.8-.2-5.7,0-18.7,2-37.7,11.1-50.6,24.8-4.9,5.2-9.1,11-12,17.6-.8,1.7-1.4,3.4-2,5.1-1.7,5.2-2.6,10.6-2.1,16.2,1,11.2,6.4,21.8,13.9,30.2,7.5,8.4,11.1,9.6,18.1,12.3.6.2,1.6.8,1.5,1.5,0,.2,0,.3-.2.5-.9,1.6-4.2,3.8-5.9,4.9l-24.1,14.6-1.9,1.1-29.7,18c-.4.9-1.5.3-1.6,1.1,0,0,0,.2-.1.3,7.3,12.8,18.4,24,31.9,30.2,8.2,3.8,17.1,5.7,26.2,5.5,12.7-.3,24.4-5.6,33.2-14.7,4-4.3,7.4-9.2,10.1-14.5,3.4-6.8,5.5-14.3,6.1-21.9h0c0,0,0-.3,0-.3l.3-3.9c0-.2.2-.3.3-.3,1-.3,4,1.1,5.6,2.1l12.3,7.3,46.9,28.1c1.8-3.3,3.4-6.7,4.7-10.1,2.1-5.4,3.7-11,4.7-16.7,3.2-17.9.4-36.3-11.5-50.4-9.1-10.9-22.2-16.9-36.3-17.7Z"/> <path d="M336.2,107.2c9.9-2.6,14.5-8.4,14.5-17.5,0-13.3-7.9-22.1-27-22.1h-40.2l2.4,11.9v58.5l-2.4,11.9h42.8c20.5,0,30.5-8.8,30.5-22.7s-7.6-17.5-20.6-20ZM301.9,78.8h17.3c11.2,0,15.5,4.7,15.5,12.2s-5.8,11.5-17,11.5h-15.8v-23.7ZM323.3,138.8h-21.3v-25.5h19.6c10.9,0,17.5,4.6,17.5,12.6s-4.6,12.9-15.8,12.9Z"/> <path d="M423.8,150.1c0-.1,23.9-.1,23.9-.1l-25.9-34.7c12.9-3,19.2-11.4,19.2-22.8s-9.3-24.8-29.8-24.8h-40.9l2.4,11.9v58.5l-2.4,11.9h21.3l-2.6-11.9v-19.8h16.5l15.9,22.1,2.4,9.7ZM407.2,106.5h-18.5v-27.9h20.1c11.2,0,16.1,4.7,16.1,14s-6.6,13.9-17.7,13.9Z"/> <path d="M497.7,65.4c-25.5,0-41.8,15.9-41.8,43.3s16.4,43.7,41.8,43.7,41.7-16.3,41.7-43.7-16.1-43.3-41.7-43.3ZM497.6,140.2c-14.6,0-24.6-10.2-24.6-31.5s10.2-31.2,24.8-31.2,24.4,9.9,24.4,31.2-10,31.5-24.6,31.5Z"/> <polygon points="621.4 130.7 621.4 130.8 621.5 130.7 621.4 130.7"/> <path d="M621.4,130.8l-13.8,7.6c-4.5,1.1-8.7,1.5-12.3,1.5-15.6,0-26.4-10.8-26.4-31.9s10.9-30.5,25-30.5,8.4.4,13,1.5l14,7.6-2.6-17.1c-7.8-2.5-16.5-4.1-25.8-4.1-23.7,0-40.7,15-40.7,43s17.2,43.6,42.2,43.6,16.7-1.5,24.8-4.1l2.6-17.1Z"/> <polygon points="710.1 79.5 712.4 67.6 691.4 67.6 693.8 79.5 693.8 102.2 654.4 102.2 654.4 79.5 656.8 67.6 635.7 67.6 638.1 79.5 638.1 138.1 635.7 150 656.8 150 654.4 138.1 654.4 114.1 693.8 114.1 693.8 138.1 691.4 150 712.4 150 710.1 138.1 710.1 79.5"/> <path d="M322.7,198.3h0v10.9c-4.5,1.5-8,2-12.3,2-11.8,0-18.6-7.6-18.6-20.8s6.6-20.2,18.7-20.2,6,0,7.8,0h0c0,0,.4.3.4.3.3.2.7.5,1.6.7l9.4,5.1-1.5-9.9h-.7c-5.8-2.1-10.9-3.1-17.1-3.1-16.5,0-26.8,10.3-26.8,26.9s10.5,27.4,26.7,27.4,13.7-.5,14.9-1.5c.3-.2.5-.4,1-.7.8-.4,1.8-.9,3.4-1.6l.8-.3v-22.9h-10.5l2.8,7.6Z"/> <path d="M393.2,181v-.3s0,0,0,0v-.4c0-10.2-6.3-15.5-18.3-15.5h-23.4l1.2,8.1v35.7s-1.2,8.2-1.2,8.2h11l-1.5-8.1v-12.5h10.3l11.7,14.6,2.3,6h12.6l-17.5-21.8c8.1-1.5,12.8-6.5,13.1-13.9ZM360.7,189.2v-18h13.5c7.3,0,10.8,2.9,10.8,9s-4,9-11.9,9h-12.4Z"/> <path d="M451.2,164.7l1.3,8.8v.2c0,0,0,25.7,0,25.7,0,8.1-4.7,12-14.4,12s-14.2-3.9-14.2-12v-26.5s1.2-8.2,1.2-8.2h-10.5l1.2,8.1v26.3c0,12.4,7.7,18.9,22.2,18.9s22.2-6.5,22.2-18.9v-26.3s1.2-8.2,1.2-8.2h-9.9Z"/> <path d="M506.5,164.9h0c0-.1-23.5-.1-23.5-.1l1.2,8.1v35.7s-1.2,8.2-1.2,8.2h11.4l-2-8.2v-10.3h13.1c12.7,0,19.2-5.6,19.2-16.7s-6.1-16.6-18.1-16.7ZM504.7,191.4h-1.2c-1.6,0-7.1,0-11.2,0v-20.2h12.9c7.7,0,11.2,3.1,11.2,10.2s-3.4,9.9-11.7,9.9Z"/> <path d="M568,164.9h0c0-.1-23.5-.1-23.5-.1l1.2,8.1v35.7s-1.2,8.2-1.2,8.2h11.4l-2-8.2v-10.3h13.1c12.7,0,19.2-5.6,19.2-16.7s-6.1-16.6-18.1-16.7ZM566.2,191.4h-1.2c-1.6,0-7.1,0-11.2,0v-20.2h12.9c7.7,0,11.2,3.1,11.2,10.2s-3.4,9.9-11.7,9.9Z"/> <polygon points="615.2 210 615.2 193.4 631.2 193.4 638.5 194.2 638.5 185.9 631.4 186.7 615.2 186.7 615.2 171.4 637.1 171.4 645.5 173.3 644.2 164.8 605.8 164.8 607 172.8 607.1 208.5 605.8 216.6 644.5 216.6 645.8 208.2 637.4 210 615.2 210"/> <polygon points="702.7 164.8 703.8 172.8 703.8 206.6 676.7 165 676.6 164.8 665.3 164.8 666.5 172.8 666.5 208.5 665.3 216.6 675.1 216.6 673.9 208.6 673.9 174.7 701.1 216.4 701.3 216.6 711.2 216.6 711.2 172.9 712.4 164.8 702.7 164.8"/></g></symbol>
+</svg>
+
+<header class="nav wrap" id="topp">
+  <a class="logo" href="#topp" aria-label="Broch Gruppen, til forsiden"><svg viewBox="0 0 640.1 186.3" aria-hidden="true"><use href="#logo"/></svg></a>
+  <button class="meny-knapp" type="button" aria-label="Åpne meny"><span class="t-knapp">Meny</span><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span></button>
+</header>
+
+<main>
+  <section class="innledning wrap" aria-labelledby="h1">
+    <p class="t-etikett">Vår portefølje</p>
+    <h1 class="t-utsagn" id="h1">Langsiktig eierskap <span class="lys">i industri, teknologi, eiendom, hotell og bil</span></h1>
+    <div class="forskjovet">
+      <div>
+        <p class="t-brod">J.C. Broch er et familieeid industri- og eiendomskonsern med en bred portefølje. Gjennom langsiktig eierskap utvikler vi virksomheter med mål om å skape arbeidsplasser, industriell utvikling og verdier som varer.</p>
+        <p class="t-brod">Vi investerer i selskaper med potensial for langsiktig utvikling, med aktivt eierskap og tett samarbeid med ledelsen.</p>
+      </div>
+    </div>
+    <div class="motto">
+      <p class="t-etikett">Slik eier vi</p>
+      <p>Aktivt, langsiktig og med mål om verdier som varer</p>
+    </div>
+  </section>
+
+  <section class="rutenett wrap" aria-label="Industrier">
+    <div class="kol kol-a">
+      <a class="kort" href="#industri"><img src="industri.jpg" alt="Tekniker i hjelm og refleksjakke foran en tunnelåpning"><span class="kort-tekst"><span class="t-h3">Industri</span><span class="kort-mer">Les mer <span aria-hidden="true">→</span></span></span></a>
+      <a class="kort" href="#naeringseiendom"><img src="naeringseiendom.jpg" alt="Teglfasade med buede vinduer og glassbygg bak" loading="lazy"><span class="kort-tekst"><span class="t-h3">Næringseiendom</span><span class="kort-mer">Les mer <span aria-hidden="true">→</span></span></span></a>
+      <a class="kort boks" href="#bil"><svg preserveAspectRatio="none" viewBox="0 0 100 100" aria-hidden="true"><line x1="0" y1="0" x2="100" y2="100"/><line x1="100" y1="0" x2="0" y2="100"/></svg><span class="boks-merke">Bildeboks · Bil</span><span class="kort-tekst"><span class="t-h3">Bil</span><span class="kort-mer">Les mer <span aria-hidden="true">→</span></span></span></a>
+    </div>
+    <div class="kol kol-b">
+      <a class="kort" href="#teknologi"><img src="teknologi.jpg" alt="To kolleger ser på en bærbar PC i et lyst produksjonslokale"><span class="kort-tekst"><span class="t-h3">Teknologi</span><span class="kort-mer">Les mer <span aria-hidden="true">→</span></span></span></a>
+      <a class="kort" href="#hotell"><img src="hotell.jpg" alt="Hotell i tre og glass på en fjellknaus" loading="lazy"><span class="kort-tekst"><span class="t-h3">Hotell</span><span class="kort-mer">Les mer <span aria-hidden="true">→</span></span></span></a>
+      <a class="kort" href="#investeringer"><img src="investeringer.jpg" alt="Møterom med stoler rundt et bord, sett gjennom glass" loading="lazy"><span class="kort-tekst"><span class="t-h3">Investeringer</span><span class="kort-mer">Les mer <span aria-hidden="true">→</span></span></span></a>
+    </div>
+  </section>
+
+  <section class="kontakt wrap" aria-labelledby="h-kontakt">
+    <p class="t-etikett">Kontakt</p>
+    <h2 class="t-h2" id="h-kontakt">Vil du vite mer om porteføljen?</h2>
+    <div class="forskjovet">
+      <div>
+        <p class="t-brod">Vi forteller gjerne mer om selskapene og eiendommene våre, og om hvordan vi jobber som eier.</p>
+        <a class="knapp t-knapp" href="#kontakt">Kontakt oss <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="bunn wrap" id="kontakt">
+  <svg class="monster monster-bunn" viewBox="-1 -1 502 502" aria-hidden="true"><path d="M200 0H300V100A100 100 0 0 1 200 0ZM100 100H200V200A100 100 0 0 1 100 100ZM300 100H400V200A100 100 0 0 1 300 100ZM0 200H100V300A100 100 0 0 1 0 200ZM200 200H300V300A100 100 0 0 1 200 200ZM400 200H500V300A100 100 0 0 1 400 200ZM100 300H200V400A100 100 0 0 1 100 300ZM300 300H400V400A100 100 0 0 1 300 300ZM200 400H300V500A100 100 0 0 1 200 400Z"/></svg>
+  <a class="til-topp" href="#topp"><svg viewBox="0 0 30 14" aria-hidden="true"><path d="M15 0 L30 10 A 26 26 0 0 1 0 10 Z"/></svg><span class="t-knapp">Til topp</span></a>
+  <div class="bunn-g">
+    <address class="adr">Henrik Ibsens gate 100<br>0255 Oslo<br>Norge // Norway</address>
+    <ul class="bunn-meny" aria-label="Bunnmeny">
+      <li><a href="#topp">Om oss</a></li>
+      <li><a href="#topp">Historien</a></li>
+      <li><a href="#topp">Portefølje</a></li>
+      <li><a href="#topp">Stiftelsen</a></li>
+    </ul>
+    <svg class="logo-bunn" viewBox="0 0 640.1 186.3" role="img" aria-label="Broch Gruppen"><use href="#logo"/></svg>
+  </div>
+</footer>

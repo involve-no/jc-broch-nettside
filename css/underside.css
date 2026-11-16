@@ -1,0 +1,701 @@
+/* =========================================================================
+   Undersider med flyt (Om oss, Portefølje, Historien). AD 12.11.2026.
+   Ikke kort som glir over hverandre: siden ruller som én flate. Hver modul fyller skjermen,
+   og innholdet holder seg et lite øyeblikk (--hold) før det ruller videre.
+   Bygger på tokens.css og forside.css (lenker, header, meny, bunnfelt, rulleanimasjoner).
+   ========================================================================= */
+
+.flyt { --hold: 24svh; }
+
+/* Header: vanlig flyt, ingen pause. Etikett + påstand venstrestilt i kol 4–11 som i Figma «Om oss». */
+.flyt .hero { position: relative; top: auto; margin-bottom: 0; }
+.flyt .hero-midt { text-align: left; }
+.hero-tittel { display: grid; justify-items: start; }
+.hero-tittel .etikett { margin-bottom: var(--space-6); }
+
+/* ---------- Modul: full skjermhøyde med et lite stopp ---------- */
+.flyt main { background: var(--papir); }
+.flyt main::after { height: 0; }
+.modul { position: relative; display: flow-root; background: var(--papir); }
+.modul::after { content: ""; display: block; height: var(--hold); }   /* rommet der innholdet står stille (sticky kan ikke bruke egen padding) */
+.modul-ramme {
+  position: sticky; top: var(--klebe, 0px);   /* --klebe fra JS: høye moduler klebes først når bunnen er synlig */
+  min-height: 100svh; display: flex; align-items: center; overflow: clip;
+}
+.modul-ramme > .grid { width: 100%; padding-block: var(--seksjon-topp); }
+
+/* Tekstspalter (én spalte, regel 6) */
+.spalte-smal, .spalte-bred, .spalte-band { display: grid; justify-items: start; gap: var(--tittel-til-tekst); }
+.spalte-smal .t-stor { max-width: 65ch; }
+.spalte-bred { gap: var(--space-6); }
+.spalte-bred .t-ingress, .spalte-ingress { max-width: none; }
+.spalte-band .lenke { margin-top: calc(var(--tekst-til-lenke) - var(--tittel-til-tekst)); }
+
+/* Dekor: bladformen fra logoen, fylt i flate, utfallende til venstre (som i Figma). Ett per modul. */
+.modul-blad { position: absolute; left: -12vw; top: 50%; translate: 0 -50%; rotate: -58deg; width: min(70vw, 1100px); height: auto; color: var(--flate); pointer-events: none; }
+.modul-ramme > .grid { position: relative; }
+
+/* Plommebånd med rund bunn, siste modul før bunnfeltet */
+.modul.band { background: var(--plomme); color: var(--sten); border-radius: 0 0 var(--radius-seksjon) var(--radius-seksjon); margin-bottom: calc(-1 * var(--radius-seksjon)); }
+.modul.band::after { height: 0; }
+.band .lenke { color: var(--tegl); }
+.band .modul-ramme { position: relative; top: auto; }
+
+/* ---------- Om oss: bildeklynge (to små til venstre, ett stort til høyre) ---------- */
+.klynge3 { display: grid; gap: var(--gutter); }
+.klynge3 img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius); display: block; }
+.k-a, .k-b { aspect-ratio: 4 / 3; }
+.k-c { aspect-ratio: 4 / 3; }
+
+/* ---------- Områder (portefølje, historien): bilde + tekst ---------- */
+.omrade-bilde { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
+.omrade-bilde.smal { aspect-ratio: 531 / 555; }
+.omrade-tekst { display: grid; justify-items: start; gap: var(--tittel-til-tekst); margin-top: var(--kolonne-luft); }
+.omrade-tekst .t-stor, .omrade-tekst .t-brod { max-width: 60ch; }
+.omrade-tittel { margin-bottom: var(--space-2); }
+.omrade-tekst .lenke { margin-top: calc(var(--tekst-til-lenke) - var(--tittel-til-tekst)); }
+
+/* ---------- Organisasjonskart (portefølje) ---------- */
+.org { display: grid; justify-items: center; }
+.org-topp {
+  margin: 0; padding: var(--space-8) var(--space-12); min-width: min(100%, 24rem); text-align: center;
+  border: 1px solid var(--plomme); border-radius: var(--radius); background: var(--papir);
+}
+.org-stamme { display: block; width: 1px; height: var(--space-12); background: var(--plomme); transform-origin: top; }
+.org-rad { position: relative; display: grid; gap: var(--space-6); width: 100%; }
+.org-rad li { position: relative; display: grid; }
+.org-boks {
+  display: grid; align-content: start; gap: var(--space-3); height: 100%;
+  padding: var(--space-8); border-radius: var(--radius); background: var(--industri);
+  text-decoration: none; transition: background-color 1s cubic-bezier(.22, 1, .36, 1);
+}
+.org-boks:hover, .org-boks:focus-visible { background: var(--sten); }
+.org-boks .t-h3 { font-weight: 300; }
+
+@media (min-width: 1024px) {
+  /* Kartet: toppen i kol 5–9, tre bokser over hele bredden, streker mellom */
+  .org { grid-column: 1 / -1; }
+  .org-topp { min-width: calc((100% - 11 * var(--gutter)) / 12 * 4 + 3 * var(--gutter)); }
+  .org-rad { grid-template-columns: repeat(3, 1fr); gap: var(--gutter); padding-top: var(--space-12); }
+  /* Vannrett strek fra midten av første til midten av siste boks */
+  .org-rad::before {
+    content: ""; position: absolute; top: 0; height: 1px; background: var(--plomme);
+    left: calc((100% - 2 * var(--gutter)) / 6); right: calc((100% - 2 * var(--gutter)) / 6); transform-origin: center;
+  }
+  /* Loddrett strek ned til hver boks */
+  .org-rad li::before { content: ""; position: absolute; left: 50%; top: calc(-1 * var(--space-12)); width: 1px; height: var(--space-12); background: var(--plomme); transform-origin: top; }
+  .org-boks { padding: var(--space-12); min-height: 16rem; }
+}
+
+/* Rulleanimasjon for kartet: toppen, så stammen, så streken ut til sidene, så boksene. Rolig. */
+.rull .org[data-r="org"] .org-topp { opacity: 0; translate: 0 16px; transition: opacity 1s var(--ease), translate 1.2s var(--ease); }
+.rull .org[data-r="org"] .org-stamme { scale: 1 0; transition: scale 1s cubic-bezier(.65, 0, .35, 1) .5s; }
+.rull .org[data-r="org"] .org-rad::before { scale: 0 1; transition: scale 1.2s cubic-bezier(.65, 0, .35, 1) 1.2s; }
+.rull .org[data-r="org"] .org-rad li::before { scale: 1 0; transition: scale .9s cubic-bezier(.65, 0, .35, 1) 2.1s; }
+.rull .org[data-r="org"] .org-boks { opacity: 0; translate: 0 24px; transition: opacity 1s var(--ease), translate 1.2s var(--ease), background-color 1s cubic-bezier(.22, 1, .36, 1); }
+.rull .org[data-r="org"] li:nth-child(1) .org-boks { transition-delay: 2.6s, 2.6s, 0s; }
+.rull .org[data-r="org"] li:nth-child(2) .org-boks { transition-delay: 2.75s, 2.75s, 0s; }
+.rull .org[data-r="org"] li:nth-child(3) .org-boks { transition-delay: 2.9s, 2.9s, 0s; }
+.rull .org[data-r="org"].vist .org-topp, .rull .org[data-r="org"].vist .org-boks { opacity: 1; translate: none; }
+.rull .org[data-r="org"].vist .org-stamme, .rull .org[data-r="org"].vist .org-rad::before, .rull .org[data-r="org"].vist .org-rad li::before { scale: 1; }
+.rull .org.vist .org-boks:hover { transition-delay: 0s; }
+
+/* ---------- Historien: mosaikk med forløpningsflate og teglbue (etter AD-modul) ---------- */
+.mosaikk { display: grid; gap: 0; border-radius: var(--radius-seksjon); overflow: hidden; }
+.mosaikk img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mo-a, .mo-b, .mo-c { aspect-ratio: 4 / 3; }
+.mo-flate { position: relative; display: grid; place-items: center; padding: var(--space-12) var(--space-8); background: var(--forlopning); text-align: center; }
+.mo-flate .t-ingress { position: relative; max-width: 22ch; margin: 0; }
+/* Teglbuen: kvartsirkel i nedre hjørne av bildet ved siden av flaten */
+.mo-bue { display: none; }
+
+/* ---------- lg ≥ 1024 ---------- */
+@media (min-width: 1024px) {
+  .hero-tittel { grid-column: 4 / 11 !important; }
+
+  .klynge3 { grid-column: 1 / -1; grid-template-columns: 4fr 8fr; grid-template-rows: 1fr 1fr; gap: var(--gutter);
+             height: calc(100svh - 2 * var(--seksjon-topp)); max-height: 60rem; }
+  .klynge3 img { aspect-ratio: auto; }
+  .k-a { grid-column: 1; grid-row: 1; }
+  .k-b { grid-column: 1; grid-row: 2; }
+  .k-c { grid-column: 2; grid-row: 1 / 3; }
+
+  .spalte-smal { grid-column: 4 / 11; }
+  .spalte-bred { grid-column: 2 / 10; }
+  .spalte-ingress { grid-column: 3 / 11; }
+  .spalte-band { grid-column: 4 / 9; }
+
+  .m-omrade .omrade-bilde, .m-bildetekst .omrade-bilde { grid-column: 1 / 6; grid-row: 1; max-height: calc(100svh - 2 * var(--seksjon-topp)); }
+  .m-omrade .omrade-tekst, .m-bildetekst .omrade-tekst { grid-column: 7 / 12; grid-row: 1; margin-top: 0; align-self: center; }
+  .m-omrade.speil .omrade-bilde { grid-column: 7 / 13; }
+  .m-omrade.speil .omrade-tekst { grid-column: 1 / 6; }
+  .m-bildetekst .omrade-bilde { grid-column: 2 / 6; }
+
+  .mosaikk { grid-column: 1 / -1; grid-template-columns: 5fr 3fr 4fr; grid-template-rows: 1fr 1fr;
+             height: calc(100svh - 2 * var(--seksjon-topp)); max-height: 56rem; }
+  .mosaikk img { aspect-ratio: auto; }
+  .mo-a { grid-column: 1; grid-row: 1 / 3; }
+  .mo-b { grid-column: 2; grid-row: 1; }
+  .mo-c { grid-column: 2; grid-row: 2; }
+  .mo-flate { grid-column: 3; grid-row: 1 / 3; overflow: visible; }
+  .mo-bue { display: block; position: absolute; right: 100%; bottom: 0; width: 70%; height: 50%; pointer-events: none;
+            background: radial-gradient(ellipse 100% 100% at 0 0, transparent 99.4%, var(--tegl) 100%); }
+}
+@media (min-width: 1536px) {
+  .omrade-tekst .t-stor { font-size: 32px; line-height: 40px; font-weight: 300; }
+  .omrade-tittel { font-size: var(--h2); }
+}
+
+/* Mobil: litt kortere stopp, bladet mindre */
+@media (max-width: 1023px) {
+  .flyt { --hold: 12svh; }
+  .modul-blad { width: 120vw; left: -40vw; opacity: .8; }
+  .org-stamme { height: var(--space-6); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flyt { --hold: 0px; }
+}
+.org-boks .t-brod { hyphens: manual; }
+
+/* ---------- Underside-hero etter Figma «Om oss» (AD 13.11.2026) ----------
+   Ikke full skjermhøyde: forløpning i industriblå og sten øverst som tones ut i papir nederst,
+   etikett + påstand venstrestilt, ingen «Bla ned» og intet stort symbol. */
+.flyt .hero.underside-hero {
+  min-height: 0; grid-template-rows: auto auto;
+  background:
+    radial-gradient(ellipse 70% 110% at 0% 0%, rgb(184 197 210 / 1), rgb(184 197 210 / 0) 70%),
+    radial-gradient(ellipse 80% 100% at 90% 0%, rgb(184 197 210 / .9), rgb(184 197 210 / 0) 70%),
+    linear-gradient(180deg, var(--sten) 0%, rgb(232 226 219 / .6) 55%, var(--papir) 100%) var(--papir);
+}
+.flyt .underside-symbol, .flyt .underside-hero .bla-ned { display: none; }
+.flyt .underside-hero .hero-midt { padding-block: var(--space-24) var(--seksjon-topp); }
+@media (min-width: 1024px) {
+  .flyt .hero-tittel { grid-column: 5 / 11 !important; }
+}
+
+/* Om oss: bildeklyngen ligger i headeren som i Figma, forløpningen går bak øvre del av bildene (AD 13.11.2026) */
+.flyt .hero.med-bilder { grid-template-rows: auto auto auto; background-size: 100% 75%; background-repeat: no-repeat; background-color: var(--papir); }
+.hero-bilder { padding-bottom: var(--seksjon-topp); }
+.flyt .med-bilder .hero-midt { padding-bottom: var(--space-24); }
+@media (min-width: 1024px) {
+  .hero-bilder .klynge3 { height: min(72svh, 56rem); }
+}
+
+/* Om oss som Figma (AD 13.11.2026): avsnittene i Stor tekst 24/32 Regular i kol 4–10,
+   utsagnet i Ingress 48/56 i kol 2–9, båndteksten i kol 4–8. Luft mellom avsnitt = 32. */
+.spalte-smal { gap: var(--space-8); }
+
+/* =========================================================================
+   Portefølje, testoppsett etter AD-skisse 13.11.2026.
+   Hero: etikett + H1 venstre, propellen av bildeblader til høyre.
+   Områdene: bilde + tekst på hver sin side, store blad i industriblå bak, plommeblad over hotellbildet.
+   ========================================================================= */
+.hero-port .port-propell { width: min(100%, 40rem); height: auto; justify-self: center; margin-top: var(--space-12); }
+.flyt .hero-port .hero-midt { padding-block: var(--space-12) var(--seksjon-topp); align-items: center; }
+.flyt .hero-port.underside-hero { background:
+    radial-gradient(ellipse 55% 100% at 0% 0%, rgb(184 197 210 / 1), rgb(184 197 210 / 0) 70%),
+    radial-gradient(ellipse 60% 70% at 70% 10%, rgb(184 197 210 / .8), rgb(184 197 210 / 0) 70%),
+    linear-gradient(180deg, var(--sten) 0%, rgb(232 226 219 / .5) 60%, var(--papir) 100%) var(--papir); }
+
+.p-bilde { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius-seksjon); position: relative; }
+.p-tekst { position: relative; display: grid; justify-items: start; gap: var(--tittel-til-tekst); margin-top: var(--kolonne-luft); }
+.p-tekst .t-brod, .p-tekst .t-stor { max-width: 52ch; }
+.p-tekst .lenke { margin-top: calc(var(--tekst-til-lenke) - var(--tittel-til-tekst)); }
+.p-form { position: absolute; pointer-events: none; height: auto; }
+.p-form-bla, .p-form-bla2 { color: var(--industri); opacity: .55; }
+.p-form-bla { width: 80vw; right: -30vw; top: 4%; rotate: 25deg; }
+.p-form-bla2 { width: 70vw; right: -48vw; top: -10%; rotate: 70deg; }
+.p-plomme { position: relative; color: var(--sten); padding: var(--space-12) var(--space-8); margin-top: calc(-1 * var(--space-24)); }
+.p-form-plomme { color: var(--plomme); inset: 0; width: 100%; height: 100%; rotate: 0deg; }
+.p-form-plomme { width: 140%; height: auto; left: -20%; top: 50%; translate: 0 -50%; rotate: 150deg; }
+.p-plomme .p-tekst { margin-top: 0; }
+
+@media (min-width: 1024px) {
+  .hero-port .hero-tittel { grid-column: 1 / 7 !important; grid-row: 1; }
+  .hero-port .port-propell { grid-column: 7 / 13; grid-row: 1; margin-top: 0; width: min(100%, calc((100svh - 2 * var(--space-24)) * 1081 / 1000)); }
+
+  .p-omrade .grid > * { grid-row: 1; align-self: center; }
+  .p-tek .p-bilde { grid-column: 1 / 7; }
+  .p-tek .p-tekst { grid-column: 8 / 12; margin-top: 0; }
+  .p-eie .p-tekst { grid-column: 1 / 6; margin-top: 0; }
+  .p-eie .p-bilde { grid-column: 7 / 13; }
+  .p-form-bla { width: 62vw; right: -14vw; top: 8%; rotate: 20deg; }
+  .p-form-bla2 { width: 50vw; right: -34vw; top: -16%; rotate: 70deg; }
+
+  .p-andre .p-bilde { grid-column: 4 / 13; aspect-ratio: 16 / 10; }
+  .p-andre .p-plomme { grid-column: 1 / 7; margin: 0; margin-left: calc(-1 * var(--marg)); padding: var(--space-24) var(--space-12) var(--space-24) var(--marg); }
+  .p-form-plomme { width: 130%; left: -30%; rotate: 135deg; }
+}
+@media (min-width: 1024px) {
+  .p-andre .p-plomme { grid-column: 1 / 6; align-self: center; }
+  .p-andre .p-tekst { max-width: 30ch; }
+  .p-andre .p-tekst .t-brod { max-width: 30ch; }
+  .p-form-plomme { width: 175%; left: -55%; top: 50%; rotate: 128deg; }
+}
+
+/* Navigasjonen fyller hele bredden, så logoen står i kol 1 på linje med etikett og H1 (AD 13.11.2026) */
+.hero > .grid { width: 100%; justify-self: stretch; }
+
+/* Portefølje: formene fra Figma (Form_Propell_1/2, AD 13.11.2026). Utfallende i sidekanten, ingen rotasjon. */
+.p-form { rotate: 0deg !important; translate: none !important; width: auto !important; }
+.p-form-bla, .p-form-bla2 { left: auto !important; right: 0 !important; height: 88svh; opacity: .55; }
+.p-form-bla { top: 6svh !important; }
+.p-form-bla2 { top: -30svh !important; }
+.p-form-plomme { position: absolute; left: 0 !important; right: auto; top: 50% !important; translate: 0 -50% !important; height: min(84svh, 64rem); color: var(--plomme); }
+.p-andre .p-plomme { margin: 0 !important; padding: 0 !important; background: none; }
+@media (max-width: 1023px) { .p-form-plomme { height: auto; width: 100% !important; top: auto !important; bottom: 0; translate: none !important; } .p-andre .p-plomme { padding: var(--space-12) 0 !important; } }
+
+/* Organisasjonskartet i plomme: bokser plomme med sten tekst, toppboks med plommekant */
+.org-plomme .org-boks { background: var(--plomme); color: var(--sten); transition: background-color 1s cubic-bezier(.22, 1, .36, 1); }
+.org-plomme .org-boks:hover, .org-plomme .org-boks:focus-visible { background: #522e37; }
+
+/* Kartet med fargekoder (test AD 13.11.2026): Broch Gruppen plomme, teknologi industriblå, eiendom teglstein, andre sten */
+.org-plomme .org-topp { background: var(--plomme); color: var(--sten); border-color: var(--plomme); }
+.org-plomme li:nth-child(1) .org-boks { background: var(--industri); color: var(--plomme); }
+.org-plomme li:nth-child(2) .org-boks { background: var(--tegl); color: var(--sten); }
+.org-plomme li:nth-child(3) .org-boks { background: var(--sten); color: var(--plomme); }
+.org-plomme .org-boks { transition: filter 1s cubic-bezier(.22, 1, .36, 1), opacity 1s var(--ease), translate 1.2s var(--ease); }
+.org-plomme .org-boks:hover, .org-plomme .org-boks:focus-visible { filter: brightness(.94); }
+/* AD 13.11.2026: alle boksene under Broch Gruppen i sten med plomme tekst */
+.org-plomme li .org-boks { background: var(--sten) !important; color: var(--plomme) !important; }
+
+/* Underside-hero mer blå som i Figma, og H1 ett trinn ned (H2-størrelsen: 36 → 48 → 72). AD 13.11.2026 */
+.flyt .hero.underside-hero, .flyt .hero-port.underside-hero {
+  background:
+    radial-gradient(ellipse 45% 70% at 0% 100%, rgb(250 246 243 / .9), rgb(250 246 243 / 0) 70%),
+    radial-gradient(ellipse 40% 60% at 0% 45%, rgb(232 226 219 / .7), rgb(232 226 219 / 0) 70%),
+    linear-gradient(180deg, var(--industri) 0%, #C3CDD7 60%, #D9DCE0 85%, var(--papir) 100%) var(--papir);
+}
+.flyt .hero.med-bilder { background-size: 100% 75%; background-repeat: no-repeat; }
+.flyt .hero .t-h1 { font-size: var(--h2); line-height: var(--h2-lh); }
+/* Lysere mot venstre kant (AD 13.11.2026) */
+.flyt .hero.underside-hero, .flyt .hero-port.underside-hero {
+  background:
+    linear-gradient(90deg, rgb(250 246 243 / .75) 0%, rgb(250 246 243 / .35) 18%, rgb(250 246 243 / 0) 40%),
+    radial-gradient(ellipse 45% 70% at 0% 100%, rgb(250 246 243 / .9), rgb(250 246 243 / 0) 70%),
+    linear-gradient(180deg, var(--industri) 0%, #C3CDD7 60%, #D9DCE0 85%, var(--papir) 100%) var(--papir);
+}
+.flyt .hero.med-bilder { background-size: 100% 75%; background-repeat: no-repeat; }
+
+/* =========================================================================
+   Om oss etter AD 13.11.2026: tettere, lettere, propell dus bak, plommemodul nederst.
+   Ingen fullskjermmoduler her: teksten flyter med faste trinn fra skalaen.
+   ========================================================================= */
+.om-flyt { position: relative; overflow: clip; background: var(--papir); padding-block: var(--space-24) var(--space-36); }
+.om-grid { position: relative; row-gap: var(--space-24); }
+.om-flyt .t-stor { font-weight: 300; }                 /* Light, som i Figma (regel 5: lette vekter) */
+.om-flyt .spalte-smal { gap: var(--space-6); }
+.om-flyt .spalte-bred { gap: 0; }
+.om-flyt .spalte-bred .t-ingress { display: inline; }   /* to avsnitt, satt tett som ett utsagn */
+.om-flyt .spalte-bred .t-ingress + .t-ingress::before { content: " "; }
+.om-flyt .spalte-bred { display: block; }
+.om-propell { position: absolute; left: -14vw; top: 50%; translate: 0 -50%; width: min(80vw, 1200px); height: auto; color: var(--flate); pointer-events: none; }
+
+.om-band { background: var(--plomme); color: var(--sten); padding-block: var(--space-16) var(--space-24);
+           border-radius: 0 0 var(--radius-seksjon) var(--radius-seksjon); margin-bottom: calc(-1 * var(--radius-seksjon)); position: relative; z-index: 1; }
+.om-band-ikon { width: var(--space-8); height: auto; color: var(--tegl); }
+.om-band-strek { border: 0; height: 1px; background: var(--sten); margin: var(--space-6) 0 var(--space-12); }
+.om-band-tittel { margin: 0 0 var(--space-8); font: 300 var(--ingress)/var(--ingress-lh) var(--display); letter-spacing: .005em; }
+.om-band-tekst { display: grid; justify-items: start; gap: var(--space-6); }
+.om-band-tekst .t-stor { font-weight: 300; max-width: 52ch; }
+.om-band .lenke { color: var(--tegl); }
+
+@media (min-width: 1024px) {
+  .om-flyt { padding-block: var(--space-24) var(--space-36); }
+  .om-a, .om-c { grid-column: 4 / 11; }
+  .om-b { grid-column: 2 / 10; }
+  .om-band .grid > * { grid-column: 1 / -1; }
+  .om-band-tittel { grid-column: 1 / 6 !important; grid-row: 3; margin: 0; }
+  .om-band-tekst { grid-column: 7 / 12 !important; grid-row: 3; }
+  .om-band { padding-block: var(--space-24) var(--space-36); }
+}
+@media (min-width: 1536px) {
+  .om-band-tittel { font-size: 72px; line-height: 76px; }   /* H2-trinnet i skalaen, uten versaler */
+  .om-flyt .spalte-smal .t-stor { font-size: 24px; line-height: 32px; }
+}
+/* Bilde i stedet for tittel i plommemodulen (AD 13.11.2026) */
+.om-band-bilde { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius); margin-bottom: var(--space-8); }
+@media (min-width: 1024px) {
+  .om-band-bilde { grid-column: 1 / 6 !important; grid-row: 3; margin: 0; }
+  .om-band-tekst { align-self: center; }
+}
+/* Utsagnet på Om oss ett trinn ned: 48/56 → 32/40 (AD 13.11.2026). Ordmellomrom mellom de to avsnittene. */
+@media (min-width: 1536px) { .om-flyt .spalte-bred .t-ingress { font-size: 32px; line-height: 40px; } }
+.om-flyt .spalte-bred .t-ingress + .t-ingress::before { content: none; }
+.om-flyt .spalte-bred .t-ingress + .t-ingress { margin-left: .28em; }
+
+/* Om oss-header: tre like stående bildekort (AD 13.11.2026).
+   Høyde = 80 % av det forrige store Skarsnuten-bildet: 0,8 × min(72svh, 56rem) = min(57.6svh, 44.8rem).
+   Bredde = fire kolonner hver. Avrunding skalert etter Historien-modulen på forsiden:
+   64 px på 1920 px bredde = 3,33 % av bredden → 3,33 % av kortets egen bredde (cqw). */
+.kort3 { display: grid; gap: var(--gutter); }
+.k3-ramme, .k3 { display: block; }
+.k3 { width: 100%; height: min(57.6svh, 44.8rem); object-fit: cover; border-radius: calc(var(--k3-b, 100%) * .0333);
+      translate: 0 var(--k3-y, 0px); will-change: translate; }
+@media (min-width: 1024px) {
+  .kort3 { grid-column: 1 / -1; grid-template-columns: repeat(3, 1fr); align-items: start; }
+}
+@media (max-width: 1023px) { .k3 { height: auto; aspect-ratio: 4 / 5; } }
+/* Litt høyere kort: 90 % av det forrige store bildet (AD 13.11.2026): 0,9 × min(72svh, 56rem) */
+@media (min-width: 1024px) { .k3 { height: min(64.8svh, 50.4rem); } }
+
+/* Underside-hero: mykere blå (AD 13.11.2026). Én stor, myk industriblå sky oppe mot midten/høyre,
+   lyst og varmt mot venstre kant og nederst, lange overganger uten synlige kanter. */
+.flyt .hero.underside-hero, .flyt .hero-port.underside-hero {
+  background:
+    radial-gradient(ellipse 85% 95% at 62% 18%,
+      rgb(184 197 210 / 1) 0%, rgb(184 197 210 / .88) 30%, rgb(184 197 210 / .6) 55%,
+      rgb(184 197 210 / .28) 78%, rgb(184 197 210 / 0) 100%),
+    radial-gradient(ellipse 60% 80% at 0% 85%, rgb(250 246 243 / .9), rgb(250 246 243 / 0) 70%),
+    linear-gradient(180deg, #DCE0E4 0%, var(--papir) 100%) var(--papir);
+}
+.flyt .hero.med-bilder { background-size: 100% 80%; background-repeat: no-repeat; }
+
+/* Ingen kant i bunnen av headeren: det blå tones organisk ut i papir (AD 13.11.2026).
+   Øverste lag er en lang, myk overgang til papir, så ingen blåtone står igjen i underkanten. */
+.flyt .hero.underside-hero, .flyt .hero-port.underside-hero {
+  background:
+    linear-gradient(180deg, rgb(250 246 243 / 0) 45%, rgb(250 246 243 / .35) 65%, rgb(250 246 243 / .75) 82%, var(--papir) 100%),
+    radial-gradient(ellipse 85% 80% at 62% 12%,
+      rgb(184 197 210 / 1) 0%, rgb(184 197 210 / .85) 30%, rgb(184 197 210 / .55) 55%,
+      rgb(184 197 210 / .22) 78%, rgb(184 197 210 / 0) 100%),
+    radial-gradient(ellipse 60% 80% at 0% 85%, rgb(250 246 243 / .9), rgb(250 246 243 / 0) 70%),
+    linear-gradient(180deg, #DCE0E4 0%, var(--papir) 100%) var(--papir);
+}
+.flyt .hero.med-bilder { background-size: 100% 80%; background-repeat: no-repeat; }
+
+/* Portefølje: ingressen rett under headeren, ikke sentrert i en hel skjerm (AD 13.11.2026).
+   Avstand fra propellen til teksten: 96 + 96 = 192 (trinn 48). */
+.m-tett .modul-ramme { position: relative; top: auto; min-height: 0; display: block; }
+.m-tett .modul-ramme > .grid { padding-block: var(--space-24) var(--space-36); }
+.m-tett::after { height: 0; }
+.flyt .hero-port .hero-midt { padding-bottom: var(--space-24); }
+
+/* =========================================================================
+   Felles fonthierarki, likt forsiden (AD 13.11.2026). Tre nivåer under påstanden:
+   A  Tittel  – som porteføljetitlene på forsiden: IvyPresto Display 400, 48/52, +0,3 px (32/40 fra lg)
+   B  Hovedtekst – som Om oss/Historien på forsiden: IvyPresto Text Light 32/40 (24/32 fra lg)
+   C  Tekst   – som teksten i porteføljelisten: IvyPresto Text Light 24/32 (18/28 fra lg)
+   ========================================================================= */
+.flyt .p-tittel, .flyt .omrade-tittel { font: 400 var(--h3)/var(--h3-lh) var(--display); letter-spacing: .3px; text-transform: none; }
+.flyt .om-flyt .t-stor, .flyt .om-flyt .spalte-bred .t-ingress, .flyt .om-band .t-stor,
+.flyt .spalte-smal .t-stor, .flyt .spalte-band .t-stor, .flyt .spalte-bred .t-ingress, .flyt .spalte-ingress,
+.flyt .omrade-tekst .t-stor {
+  font: 300 var(--stor)/var(--stor-lh) var(--text); letter-spacing: 0;
+}
+.flyt .p-tekst .t-stor, .flyt .p-tekst .t-brod, .flyt .omrade-tekst .t-brod {
+  font: 300 var(--brod)/var(--brod-lh) var(--text);
+}
+@media (min-width: 1536px) {
+  .flyt .p-tittel, .flyt .omrade-tittel { font-size: 48px; line-height: 52px; }
+  .flyt .om-flyt .t-stor, .flyt .om-flyt .spalte-bred .t-ingress, .flyt .om-band .t-stor,
+  .flyt .spalte-smal .t-stor, .flyt .spalte-band .t-stor, .flyt .spalte-bred .t-ingress, .flyt .spalte-ingress,
+  .flyt .omrade-tekst .t-stor { font-size: 32px; line-height: 40px; }
+  .flyt .p-tekst .t-stor, .flyt .p-tekst .t-brod, .flyt .omrade-tekst .t-brod { font-size: 24px; line-height: 32px; }
+}
+.flyt .p-tekst .t-brod, .flyt .p-tekst .t-stor { max-width: 44ch; }
+.flyt .spalte-smal .t-stor, .flyt .om-band .t-stor, .flyt .spalte-band .t-stor { max-width: 40ch; }
+
+/* Om oss som Figma (AD 13.11.2026): avsnittene ett nivå ned (Tekst, nivå C), utsagnet beholder Hovedtekst (nivå B).
+   Stor skjerm: avsnitt 24/32, utsagn 32/40. Fra lg: 18/28 og 24/32. */
+.flyt .om-flyt .spalte-smal .t-stor, .flyt .om-band .t-stor { font-size: var(--brod); line-height: var(--brod-lh); max-width: 60ch; }
+@media (min-width: 1536px) {
+  .flyt .om-flyt .spalte-smal .t-stor, .flyt .om-band .t-stor { font-size: 24px; line-height: 32px; }
+}
+/* Propellen bak Om oss-teksten kuttes ikke i over- og underkant, bare utfallende til venstre (AD 13.11.2026) */
+.om-flyt { overflow: visible; overflow-x: clip; }
+.om-propell { top: 50%; max-height: calc(100% - 2 * var(--space-12)); width: auto; height: min(80vw * 188 / 187.5, 1200px); }
+
+/* Om oss: lik luft over og under bildekortene, 96 (AD 13.11.2026) */
+.med-bilder .hero-bilder { padding-bottom: 0; }
+.flyt .med-bilder .hero-midt { padding-bottom: var(--space-24); }
+.om-flyt { padding-top: var(--space-24); }
+
+/* Blåfargen litt lysere (AD 13.11.2026): toppverdien 1 → ,75, resten skalert likt */
+.flyt .hero.underside-hero, .flyt .hero-port.underside-hero {
+  background:
+    linear-gradient(180deg, rgb(250 246 243 / 0) 45%, rgb(250 246 243 / .35) 65%, rgb(250 246 243 / .75) 82%, var(--papir) 100%),
+    radial-gradient(ellipse 85% 80% at 62% 12%,
+      rgb(184 197 210 / .75) 0%, rgb(184 197 210 / .64) 30%, rgb(184 197 210 / .41) 55%,
+      rgb(184 197 210 / .16) 78%, rgb(184 197 210 / 0) 100%),
+    radial-gradient(ellipse 60% 80% at 0% 85%, rgb(250 246 243 / .9), rgb(250 246 243 / 0) 70%),
+    linear-gradient(180deg, #E4E6E8 0%, var(--papir) 100%) var(--papir);
+}
+.flyt .hero.med-bilder { background-size: 100% 80%; background-repeat: no-repeat; }
+
+/* Portefølje: tre like moduler, bilde og tekst annenhver side (AD 13.11.2026).
+   p-tv = tekst venstre (kol 1–5), bilde høyre (kol 7–12). p-bv = bilde venstre (kol 1–6), tekst høyre (kol 8–12).
+   Ingen former bak. Fonthierarki som forsiden: tittel Display 400 48/52, tekst Text Light 24/32. */
+.p-omrade .p-bilde { aspect-ratio: 4 / 3; border-radius: var(--radius); }
+.p-omrade .p-tekst { margin-top: var(--kolonne-luft); }
+.p-omrade .p-tittel { margin-bottom: var(--space-2); }
+@media (min-width: 1024px) {
+  .p-omrade .grid > * { grid-row: 1; align-self: center; }
+  .p-tv .p-tekst { grid-column: 1 / 6 !important; margin-top: 0; }
+  .p-tv .p-bilde { grid-column: 7 / 13 !important; }
+  .p-bv .p-bilde { grid-column: 1 / 7 !important; }
+  .p-bv .p-tekst { grid-column: 8 / 13 !important; margin-top: 0; }
+}
+.p-omrade .p-tekst { color: var(--plomme); }
+.flyt .p-tekst p { hyphens: manual; }
+/* Ingress → organisasjonskart: én seksjonsavstand (--seksjon-topp: 64 / 96 / 144), ikke en hel skjermhøyde (AD 13.11.2026) */
+.m-tett .modul-ramme > .grid { padding-block: 0 var(--seksjon-topp); }
+.m-tett:first-child .modul-ramme > .grid { padding-top: var(--space-24); }
+/* Organisasjonskartet etter fonthierarkiet (AD 13.11.2026): titler som porteføljetitlene (Display 400, +0,3 px),
+   undertekst tynnere (Text Light 300). */
+.org .org-topp, .org .org-boks .t-h3 { font-family: var(--display); font-weight: 400; letter-spacing: .3px; }
+.org .org-boks .t-brod { font-weight: 300; }
+
+/* Portefølje-luft etter innholdets sammenheng (AD 13.11.2026), ett trinn fra --seksjon-topp (64 / 96 / 144):
+   --luft-skille (ett trinn opp: 96 / 144 / 192) mellom deler som ikke hører sammen (ingress → kart → virksomhetene),
+   --luft-sammen (ett trinn ned: 48 / 64 / 96) mellom de tre virksomhetene, som hører sammen. */
+:root { --luft-skille: var(--space-24); --luft-sammen: var(--space-12); }
+@media (min-width: 1024px) { :root { --luft-skille: var(--space-36); --luft-sammen: var(--space-16); } }
+@media (min-width: 1536px) { :root { --luft-skille: var(--space-48); --luft-sammen: var(--space-24); } }
+.m-tett:first-child .modul-ramme > .grid, .m-org .modul-ramme > .grid { padding-bottom: var(--luft-skille); }
+.p-omrade .modul-ramme > .grid { padding-bottom: var(--luft-sammen); }
+.p-omrade:last-child .modul-ramme > .grid { padding-bottom: var(--luft-skille); }
+
+/* Organisasjonskartet: kortene snur seg rolig ved hover/fokus og viser et bilde på baksiden (AD 13.11.2026). */
+.org-plomme li .org-boks { background: none !important; padding: 0; perspective: 1600px; display: block; }
+.org-flipp { position: relative; display: grid; height: 100%; min-height: inherit; transform-style: preserve-3d;
+             transition: transform 1.2s cubic-bezier(.65, 0, .35, 1); }
+.org-forside, .org-bakside { grid-area: 1 / 1; border-radius: var(--radius); backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; }
+.org-forside { display: grid; align-content: start; gap: var(--space-3); padding: var(--space-8); background: var(--sten); color: var(--plomme); }
+.org-bakside { transform: rotateY(180deg); }
+.org-bakside img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.org-boks:hover .org-flipp, .org-boks:focus-visible .org-flipp { transform: rotateY(180deg); }
+.org-plomme .org-boks:hover, .org-plomme .org-boks:focus-visible { filter: none; }
+@media (min-width: 1024px) { .org-forside { padding: var(--space-12); min-height: 16rem; } }
+@media (prefers-reduced-motion: reduce) {
+  .org-flipp { transition: none; }
+  .org-boks:hover .org-flipp, .org-boks:focus-visible .org-flipp { transform: none; }
+  .org-bakside { transform: none; opacity: 0; transition: opacity .6s; }
+  .org-boks:hover .org-bakside, .org-boks:focus-visible .org-bakside { opacity: 1; }
+}
+.org-plomme li .org-boks { min-height: 0; height: auto; }
+.org-flipp { min-height: 0; height: auto; }
+/* Bildet på baksiden skal ikke bestemme høyden: kortet er like høyt som forsiden */
+.org-bakside { position: absolute; inset: 0; }
+
+/* Baksiden av kortene: tittelen i sten over en myk plommetone nederst, for kontrast (AD 13.11.2026) */
+.org-bakside::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(0deg, rgb(60 33 40 / .82) 0%, rgb(60 33 40 / .45) 40%, rgb(60 33 40 / 0) 75%); }
+.org-bakside-tittel { position: absolute; left: var(--space-8); right: var(--space-8); bottom: var(--space-8); z-index: 1;
+  color: var(--sten); font: 400 var(--h3)/var(--h3-lh) var(--display); letter-spacing: .3px; }
+@media (min-width: 1024px) { .org-bakside-tittel { left: var(--space-12); bottom: var(--space-12); } }
+
+/* Rolig inntoning uten forflytning (for elementer som allerede beveger seg) */
+.rull [data-r="fade"] { opacity: 0; transition: opacity 1.4s var(--ease); transition-delay: var(--d, 0ms); }
+.rull [data-r="fade"].vist { opacity: 1; }
+/* Portefølje: teksten under virksomhetstitlene ett trinn ned (AD 13.11.2026): 24/32 → 18/28 på stor skjerm */
+@media (min-width: 1536px) { .flyt .p-tekst .t-stor, .flyt .p-tekst .t-brod { font-size: 18px; line-height: 28px; } }
+.flyt .p-tekst .t-brod, .flyt .p-tekst .t-stor { max-width: 52ch; }
+/* Underside-header (AD 13.11.2026): ett trinn mer luft fra logo til etikett (96 → 144) og fra etikett til påstand (24 → 32) */
+.flyt .underside-hero .hero-midt { padding-top: var(--space-36); }
+.flyt .hero-tittel .etikett { margin-bottom: var(--space-8); }
+
+/* Om oss: headeren står fast når bildekortene er helt i skjermen, kortene glir opp (70svh rulling),
+   så en kort pause (20svh) før siden ruller videre (AD 13.11.2026). */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .hero-spor { padding-bottom: 90svh; }
+  .flyt .hero-spor > .hero { position: sticky; top: var(--klebe, 0px); overflow: clip; }
+}
+/* Sticky kan ikke bruke forelderens padding, så rommet legges i et eget tomt element etter headeren */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .hero-spor { padding-bottom: 0; }
+  .hero-spor::after { content: ""; display: block; height: 90svh; }
+}
+/* Mens headeren står fast, er det 96 px luft under kortene (luften flyttes fra teksten under inn i headeren) */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .hero-spor .med-bilder .hero-bilder { padding-bottom: var(--space-24); }
+  .hero-spor + * .om-flyt, .om-flyt { padding-top: 0; }
+}
+.om-flyt p, .om-band p { hyphens: manual; }
+
+/* =========================================================================
+   Historien etter AD-skisse 13.11.2026: plommeheader som tones ut i papir, sten tekst,
+   ingress + stort bilde, tekst med propell bak, plommemodul med neste generasjon og sitat.
+   Samme fonter og luft som Om oss.
+   ========================================================================= */
+.flyt .hero.hero-plomme {
+  color: var(--sten);
+  background:
+    radial-gradient(ellipse 90% 85% at 55% 0%, rgb(60 33 40 / 1) 0%, rgb(60 33 40 / .92) 35%, rgb(60 33 40 / .6) 62%, rgb(60 33 40 / 0) 100%),
+    linear-gradient(180deg, var(--plomme) 0%, rgb(60 33 40 / .85) 45%, rgb(250 246 243 / 0) 100%),
+    var(--papir);
+}
+.flyt .hero-plomme .t-h1, .flyt .hero-plomme .bla-ned { color: var(--sten); }
+.flyt .hero-plomme .hero-midt { padding-bottom: var(--space-48); }
+@media (min-width: 1024px) { .flyt .hero-plomme .hero-tittel { grid-column: 1 / 8 !important; } }
+
+.hi-ingress { background: var(--papir); padding-block: 0 var(--space-24); }
+.hi-ingress .grid { row-gap: var(--space-24); }
+.hi-bilde { width: 100%; height: auto; aspect-ratio: 16 / 8; object-fit: cover; object-position: 50% 40%; border-radius: var(--radius); }
+@media (min-width: 1024px) { .hi-bilde { grid-column: 1 / -1; } }
+.hi-flyt { padding-top: var(--space-24) !important; }
+
+.hi-sitat { margin: var(--space-2) 0 0; font: 300 var(--stor)/var(--stor-lh) var(--text) !important; color: var(--sten); }
+@media (min-width: 1536px) { .hi-sitat { font-size: 32px !important; line-height: 40px !important; } }
+/* Plommeheaderen holder seg mørk bak hele påstanden og tones ut først under den (kontrast for sten tekst) */
+.flyt .hero.hero-plomme {
+  background:
+    linear-gradient(180deg, var(--plomme) 0%, var(--plomme) 45%, rgb(60 33 40 / .9) 62%, rgb(60 33 40 / .45) 82%, rgb(250 246 243 / 0) 100%),
+    var(--papir);
+}
+.flyt .hero.hero-plomme {
+  background:
+    linear-gradient(180deg, var(--plomme) 0%, var(--plomme) calc(100% - 240px), rgb(60 33 40 / .55) calc(100% - 120px), rgb(250 246 243 / 0) 100%),
+    var(--papir);
+}
+.flyt .hero-plomme .hero-midt { padding-bottom: 240px; }
+
+/* Historien-header: kornete plommeforløpning, samme myke skyform som den blå på Om oss og Portefølje (AD 13.11.2026).
+   Tett plomme bak påstanden (kontrast for sten), myk sky mot høyre, lang overgang til papir. Korn fra SVG-støy i CSS. */
+.flyt .hero.hero-plomme {
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, rgb(250 246 243 / 0) 55%, rgb(250 246 243 / .4) 75%, rgb(250 246 243 / .8) 90%, var(--papir) 100%),
+    radial-gradient(ellipse 60% 75% at 18% 35%, rgb(60 33 40 / 1) 0%, rgb(60 33 40 / .9) 40%, rgb(60 33 40 / 0) 100%),
+    radial-gradient(ellipse 85% 90% at 62% 12%,
+      rgb(60 33 40 / 1) 0%, rgb(60 33 40 / .9) 30%, rgb(60 33 40 / .65) 55%,
+      rgb(60 33 40 / .3) 78%, rgb(60 33 40 / 0) 100%),
+    linear-gradient(180deg, #6E5A5F 0%, var(--papir) 100%) var(--papir);
+}
+.flyt .hero.hero-plomme::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='k'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23k)'/%3E%3C/svg%3E");
+  opacity: .22; mix-blend-mode: soft-light;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 60%, transparent 100%); mask-image: linear-gradient(180deg, #000 0%, #000 60%, transparent 100%);
+}
+
+/* Historien-header nærmere AD-referansen (13.11.2026): én stor, mørk plommesky oppe mot venstre/midten,
+   lysere mot høyre kant og nederst til venstre, lang myk overgang til papir. Mer luft over påstanden. */
+.flyt .hero.hero-plomme {
+  background:
+    radial-gradient(ellipse 72% 85% at 34% 12%,
+      rgb(60 33 40 / 1) 0%, rgb(60 33 40 / .94) 28%, rgb(60 33 40 / .72) 50%,
+      rgb(60 33 40 / .38) 72%, rgb(60 33 40 / .1) 90%, rgb(60 33 40 / 0) 100%),
+    radial-gradient(ellipse 40% 70% at 100% 20%, rgb(232 226 219 / .55), rgb(232 226 219 / 0) 70%),
+    linear-gradient(180deg, #8A7B7F 0%, #C9C0BE 55%, var(--papir) 88%) var(--papir);
+}
+.flyt .hero-plomme .hero-midt { padding-top: var(--space-48); padding-bottom: var(--space-48); }
+/* Høyere header og større sky, så påstanden står i den mørke delen som i referansen */
+.flyt .hero-plomme .hero-midt { padding-top: var(--space-72); }
+.flyt .hero.hero-plomme {
+  background:
+    radial-gradient(ellipse 75% 105% at 34% 18%,
+      rgb(60 33 40 / 1) 0%, rgb(60 33 40 / .95) 32%, rgb(60 33 40 / .8) 52%,
+      rgb(60 33 40 / .45) 72%, rgb(60 33 40 / .12) 90%, rgb(60 33 40 / 0) 100%),
+    radial-gradient(ellipse 40% 70% at 100% 20%, rgb(232 226 219 / .55), rgb(232 226 219 / 0) 70%),
+    linear-gradient(180deg, #8A7B7F 0%, #C9C0BE 60%, var(--papir) 92%) var(--papir);
+}
+/* Ingen kant mot innholdet: et øverste lag toner hele headeren ut i papir de siste ca. 30 % */
+.flyt .hero.hero-plomme {
+  background:
+    linear-gradient(180deg, rgb(250 246 243 / 0) 68%, rgb(250 246 243 / .55) 84%, var(--papir) 100%),
+    radial-gradient(ellipse 75% 105% at 34% 18%,
+      rgb(60 33 40 / 1) 0%, rgb(60 33 40 / .95) 32%, rgb(60 33 40 / .8) 52%,
+      rgb(60 33 40 / .45) 72%, rgb(60 33 40 / .12) 90%, rgb(60 33 40 / 0) 100%),
+    radial-gradient(ellipse 40% 70% at 100% 20%, rgb(232 226 219 / .55), rgb(232 226 219 / 0) 70%),
+    linear-gradient(180deg, #8A7B7F 0%, #C9C0BE 60%, var(--papir) 92%) var(--papir);
+}
+/* Fargen (AD 13.11.2026): kjernen er ren plomme #3C2128. Kornet lysnet og grånet flaten (hvit støy, soft-light),
+   og grunntonen var grå. Nå: mørk støy som bare gir struktur (multiply, svak), og grunntoner i plommens egen kulør. */
+.flyt .hero.hero-plomme::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='k'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .24 0 0 0 0 .13 0 0 0 0 .16 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23k)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply; opacity: .35;
+}
+.flyt .hero.hero-plomme {
+  background:
+    linear-gradient(180deg, rgb(250 246 243 / 0) 68%, rgb(250 246 243 / .55) 84%, var(--papir) 100%),
+    radial-gradient(ellipse 75% 105% at 34% 18%,
+      rgb(60 33 40 / 1) 0%, rgb(60 33 40 / 1) 30%, rgb(60 33 40 / .88) 50%,
+      rgb(60 33 40 / .55) 70%, rgb(60 33 40 / .18) 88%, rgb(60 33 40 / 0) 100%),
+    radial-gradient(ellipse 40% 70% at 100% 20%, rgb(240 228 226 / .45), rgb(240 228 226 / 0) 70%),
+    linear-gradient(180deg, #6B4650 0%, #B89A9F 55%, #EBDDDA 80%, var(--papir) 95%) var(--papir);
+}
+
+/* Historien: propellen like stor som på Om oss (ca. 840 px på 1920), utfallende til venstre, og starter bak
+   nedre del av det store bildet som i Figma-skissen. Seksjonene er gjennomsiktige så den kan ligge bak bildet. */
+.hi-ingress { background: none; position: relative; z-index: 1; }
+.hi-ingress .hi-bilde { position: relative; }
+.hi-flyt { background: none; position: relative; z-index: 0; }
+.hi-flyt .om-propell {
+  max-height: none; width: auto; height: min(44vw, 840px);
+  top: calc(-1 * min(16vw, 300px)); translate: 0 0; left: -14vw;
+}
+
+/* Bildet av Jørgen større: hele bildet i eget format (3 : 2) i stedet for 16 : 8-utsnitt (AD 13.11.2026) */
+.hi-bilde { aspect-ratio: 1942 / 1292; object-position: 50% 50%; }
+
+/* Alle underside-headere likt (AD 13.11.2026): 144 fra logoen til etiketten, 32 fra etikett til påstand,
+   påstanden i H2-trinnet (72/76 → 48/52 → 36/40). */
+.flyt .underside-hero .hero-midt { padding-top: var(--space-36) !important; }
+.flyt .underside-hero .hero-tittel .etikett { margin-bottom: var(--space-8) !important; }
+.flyt .underside-hero .t-h1 { font-size: var(--h2) !important; line-height: var(--h2-lh) !important; }
+.flyt .hero-port .hero-midt { align-items: start; }
+.flyt .hero-port .hero-tittel { align-self: start; }
+
+/* Historien-header (AD 13.11.2026): høyere, og overgangen til papir starter tidligere og er lengre og mykere,
+   så det ikke blir en hard strek under påstanden. */
+.flyt .hero-plomme .hero-midt { padding-bottom: var(--space-72) !important; }
+.flyt .hero.hero-plomme {
+  background:
+    linear-gradient(180deg, rgb(250 246 243 / 0) 42%, rgb(250 246 243 / .12) 54%, rgb(250 246 243 / .32) 66%,
+      rgb(250 246 243 / .58) 78%, rgb(250 246 243 / .84) 90%, var(--papir) 100%),
+    radial-gradient(ellipse 80% 120% at 32% 8%,
+      rgb(60 33 40 / 1) 0%, rgb(60 33 40 / 1) 28%, rgb(60 33 40 / .86) 48%,
+      rgb(60 33 40 / .55) 68%, rgb(60 33 40 / .22) 86%, rgb(60 33 40 / 0) 100%),
+    radial-gradient(ellipse 40% 70% at 100% 20%, rgb(240 228 226 / .45), rgb(240 228 226 / 0) 70%),
+    linear-gradient(180deg, #6B4650 0%, #A88A90 50%, #E2D3D1 80%, var(--papir) 100%) var(--papir);
+}
+.flyt .hero.hero-plomme::before {
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 45%, transparent 95%); mask-image: linear-gradient(180deg, #000 0%, #000 45%, transparent 95%);
+}
+/* Påstanden på tre linjer (AD 13.11.2026) */
+@media (min-width: 1024px) { .flyt .hero-plomme .hero-tittel { grid-column: 1 / 6 !important; } }
+/* Etiketten på plommeheaderen i sten (AD 13.11.2026) */
+.flyt .hero-plomme .hero-tittel .etikett { color: var(--sten); }
+/* Påstanden på Historien: alltid tre linjer fra lg, faste linjeskift og bred nok spalte (AD 13.11.2026) */
+.brudd { display: none; }
+@media (min-width: 1024px) {
+  .brudd { display: inline; }
+  .flyt .hero-plomme .hero-tittel { grid-column: 1 / 10 !important; }
+  .flyt .hero-plomme .t-h1 { white-space: nowrap; }
+}
+/* Portefølje: propellen i headeren større (AD 13.11.2026): kol 6–13 og mindre luft trukket fra skjermhøyden */
+@media (min-width: 1024px) {
+  .hero-port .port-propell { grid-column: 6 / 13 !important; justify-self: end;
+    width: min(100%, calc((100svh - var(--space-24)) * 1081 / 1000)); }
+}
+/* Historien: mindre luft fra påstand til ingress, ett trinn ned (288 → 192) (AD 13.11.2026) */
+.flyt .hero-plomme .hero-midt { padding-bottom: var(--space-48) !important; }
+/* Påstanden venstrestilt på linje med etiketten (den ble sentrert etter at den fikk faste linjeskift) */
+.flyt .hero-tittel .t-h1 { justify-self: start; }
+
+/* Historien: Jørgen-avsnittet på B-nivå, ikke sitatstørrelse */
+.hi-flyt .om-b p { font: 300 var(--stor)/var(--stor-lh) var(--text) !important; }
+@media (min-width: 1536px) { .hi-flyt .om-b p { font-size: 32px !important; line-height: 40px !important; } }
+
+/* ============ KONTAKT: bilde til venstre, plommeflate med kontaktinfo til høyre ============ */
+.kontakt-hero { position: relative; min-height: 100svh; padding: 0 !important; background: var(--plomme); color: var(--sten); overflow: hidden; }
+.kontakt-hero .hero-nav { position: relative; z-index: 3; }
+.kontakt-hero .logo, .kontakt-hero .meny-knapp { color: var(--sten); }
+.kontakt-bilde { position: absolute; inset: 0 auto 0 0; width: 100%; height: 56svh; object-fit: cover; }
+.kontakt-flate { position: relative; z-index: 2; margin-top: 56svh; padding: var(--space-16) var(--marg) var(--space-24); }
+.kontakt-innhold .t-h1 { margin: 0 0 var(--space-12); color: var(--sten); }
+.kontakt-liste { display: grid; gap: var(--space-8); margin: 0; }
+.kontakt-liste dt { margin-bottom: var(--space-2); color: var(--sten); }
+.kontakt-liste dd { margin: 0; color: var(--sten); }
+.kontakt-liste a { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em; }
+@media (min-width: 1024px) {
+  .kontakt-bilde { width: 50%; height: 100%; }
+  .kontakt-flate { margin: 0 0 0 50%; min-height: 100svh; display: flex; align-items: center; padding: var(--space-36) var(--marg) var(--space-24) calc(100% / 12); }
+}
+.kontakt-hero + .meny + main:empty { display: none; }
+.kontakt-hero { background: var(--plomme) !important; }
+.kontakt-hero::before, .kontakt-hero::after { content: none !important; display: none !important; }
+.kontakt-hero .underside-symbol, .kontakt-hero .bla-ned { display: none; }
+.kontakt-flate { background: var(--plomme); }
+.p-tekst .lenke + .lenke { margin-top: calc(-1 * var(--space-8)) !important; }
